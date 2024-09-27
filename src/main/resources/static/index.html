@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ProcessMaker</title>
+</head>
+<script lang="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+
+    });
+
+    content = () => {
+
+    }
+</script>
+
+<style>
+    div { display: flex; justify-content: start; align-items: center; padding: 5em; }
+    div#menu { height: 10vh; }
+    div.items { width: 15%; height: 100%; }
+    div.items a { color: black; text-decoration: none; }
+</style>
+
+<body>
+    <div id="menu">
+        <div class="items">
+            <a href="#" onclick="content('/moduleForm.html')" title="모듈 등록하기">① 모듈 등록하기</a>
+        </div>
+        <div class="items">
+            <a href="#" onclick="content('/processForm.html')" title="프로세스 등록하기">② 프로세스 등록하기</a>
+        </div>
+    </div>
+
+    <div id="content">
+
+    </div>
+</body>
+</html>

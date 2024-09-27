@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ProcessForm</title>
+    <script lang="text/javascript">
+        let modules = [];
+        document.addEventListener('DOMContentLoaded', function() {
+            getModuleList();
+        });
+
+        getModuleList = () => {
+            fetch('/rest/modules/list')
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json(); // JSON으로 응답을 변환
+              })
+              .then(data => {
+                modules = data; // 응답 데이터 처리
+              })
+              .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+              });
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
