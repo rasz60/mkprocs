@@ -9,14 +9,26 @@
 
     });
 
-    content = () => {
-
+    content = (path) => {
+        fetch(path)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                    document.getElementById('content').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
     }
 </script>
 
 <style>
-    div { display: flex; justify-content: start; align-items: center; padding: 5em; }
-    div#menu { height: 10vh; }
+    div { display: flex; justify-content: start; align-items: center; padding: 3em; }
+    div#menu { height: 5vh; }
     div.items { width: 15%; height: 100%; }
     div.items a { color: black; text-decoration: none; }
 </style>
