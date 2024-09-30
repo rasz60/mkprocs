@@ -42,7 +42,7 @@ tasks.named('test') {
 
 
 // REACT BUILD CONFIG
-def frontendDir = "$projectDir/src/main/frontend"
+def frontendDir = "$projectDir/src/main/frontend"	// react 프로젝트 소스 경로
 
 sourceSets {
 	main {
@@ -51,9 +51,9 @@ sourceSets {
 	}
 }
 
-processResources { dependsOn "copyReactBuildFiles" }
+processResources { dependsOn "deleteReactBuildFiles" }	// task 종단점 설정
 
-task installReact(type: Exec) {
+task installReact(type: Exec) {	// react 설치
 	workingDir "$frontendDir"
 	inputs.dir "$frontendDir"
 	group = BasePlugin.BUILD_GROUP
@@ -65,7 +65,7 @@ task installReact(type: Exec) {
 	}
 }
 
-task buildReact(type: Exec) {
+task buildReact(type: Exec) {	// react 프로젝트 build
 	dependsOn "installReact"
 	workingDir "$frontendDir"
 	inputs.dir "$frontendDir"
@@ -77,8 +77,13 @@ task buildReact(type: Exec) {
 	}
 }
 
-task copyReactBuildFiles(type: Copy) {
+task copyReactBuildFiles(type: Copy) {		// build된 소스 spring static 폴더로 copy
 	dependsOn "buildReact"
 	from "$frontendDir/build"
 	into "$projectDir/src/main/resources/static"
+}
+
+task deleteReactBuildFiles(type: Delete) {	// frontend 폴더에 build된 소스 삭제
+	dependsOn "copyReactBuildFiles"
+	delete "$frontendDir/build"
 }
