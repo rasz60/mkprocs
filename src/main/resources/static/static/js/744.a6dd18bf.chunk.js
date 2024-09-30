@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[744],{744:(e,s,n)=>{n.r(s),n.d(s,{default:()=>t});var r=n(574),c=n(579);const t=()=>(0,c.jsx)(r.A,{children:"ProcessForm"})}}]);
+//# sourceMappingURL=744.a6dd18bf.chunk.js.map

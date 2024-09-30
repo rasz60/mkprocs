@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css");
+
+$font-stack: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto,
+  "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR",
+  "Malgun Gothic", sans-serif;
+
+a {
+  color: black !important;
+  text-decoration: none !important;
+}
+
+body {
+  font-family: $font-stack;
+}
+
+#content {
+  margin-top: 1em;
+  padding: 2em;
+  min-height: 80vh;
+}
+
+@import "header/header";
+
+@import "modules/form";
