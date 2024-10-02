@@ -1,0 +1,39 @@
+#diagram {
+  min-height: 30vh;
+  display: flex;
+
+  .steps {
+    width: 15.5%;
+    height: 20vh;
+    margin: auto 2em;
+    border-radius: 50em;
+    display: flex;
+    align-items: center;
+
+    svg {
+      margin: auto 0;
+    }
+  }
+
+  .steps:hover {
+    background-color: rgba(241, 247, 255, 0.4);
+    cursor: pointer;
+  }
+
+  .steps.new {
+    border: 2px solid rgba(13, 110, 253, 0.5);
+    color: rgba(13, 110, 253, 0.5);
+  }
+
+  .steps.new:hover {
+    cursor: pointer;
+    background-color: rgba(13, 110, 253, 0.4);
+    color: white;
+    border: 2px solid transparent;
+  }
+}
+
+#stepState {
+  margin-top: 2em;
+  min-height: 70vh;
+}

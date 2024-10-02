@@ -16,40 +16,40 @@ const Header = () => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
           <Nav.Link>
-            <Link to="/" class="link-menu">
+            <Link to="/" className="link-menu">
               Home
             </Link>
           </Nav.Link>
           <NavDropdown title="Modules" id="basic-nav-dropdown">
             <NavDropdown.Item>
-              <Link to="/modules/guides" class="link-menu">
+              <Link to="/modules/guides" className="link-menu">
                 Guides
               </Link>
             </NavDropdown.Item>
             <NavDropdown.Item>
-              <Link to="/modules/form" class="link-menu">
+              <Link to="/modules/form" className="link-menu">
                 Form
               </Link>
             </NavDropdown.Item>
             <NavDropdown.Item>
-              <Link to="/modules/list" class="link-menu">
+              <Link to="/modules/list" className="link-menu">
                 List
               </Link>
             </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown title="Processes" id="basic-nav-dropdown">
             <NavDropdown.Item>
-              <Link to="/processes/guides" class="link-menu">
+              <Link to="/processes/guides" className="link-menu">
                 Guides
               </Link>
             </NavDropdown.Item>
             <NavDropdown.Item>
-              <Link to="/processes/form" class="link-menu">
+              <Link to="/processes/form" className="link-menu">
                 Form
               </Link>
             </NavDropdown.Item>
             <NavDropdown.Item>
-              <Link to="/processes/list" class="link-menu">
+              <Link to="/processes/list" className="link-menu">
                 List
               </Link>
             </NavDropdown.Item>

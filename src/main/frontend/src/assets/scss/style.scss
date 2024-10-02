@@ -6,13 +6,16 @@ $font-stack: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto,
   "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR",
   "Malgun Gothic", sans-serif;
 
+body {
+  font-family: $font-stack;
+
+  min-height: 100vh;
+  background-color: rgb(211 211 211 / 10%) !important;
+}
+
 a {
   color: black !important;
   text-decoration: none !important;
-}
-
-body {
-  font-family: $font-stack;
 }
 
 #content {
@@ -23,4 +26,9 @@ body {
 
 @import "header/header";
 
+// modules
 @import "modules/form";
+
+// processes
+@import "processes/form";
+@import "processes/details";
