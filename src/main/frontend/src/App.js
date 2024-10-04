@@ -6,6 +6,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const Home = lazy(() => import("./components/Home"));
 const ModuleForm = lazy(() => import("./components/modules/ModuleForm"));
 const ProcessForm = lazy(() => import("./components/processes/ProcessForm"));
+const PlatformLayout = lazy(() =>
+  import("./components/platform/PlatformLayout")
+);
 const Not = lazy(() => import("./components/Not"));
 
 const App = () => {
@@ -16,6 +19,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/modules/form" element={<ModuleForm />} />
           <Route path="/processes/form" element={<ProcessForm />} />
+          <Route path="/admin/platform/*" element={<PlatformLayout />} />
           <Route path="/*" element={<Not />} />
         </Routes>
       </Suspense>

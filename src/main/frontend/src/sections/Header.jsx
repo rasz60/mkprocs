@@ -20,6 +20,8 @@ const Header = () => {
               Home
             </Link>
           </Nav.Link>
+
+          {/*--Modules--*/}
           <NavDropdown title="Modules" id="basic-nav-dropdown">
             <NavDropdown.Item>
               <Link to="/modules/guides" className="link-menu">
@@ -37,6 +39,8 @@ const Header = () => {
               </Link>
             </NavDropdown.Item>
           </NavDropdown>
+
+          {/*--Process--*/}
           <NavDropdown title="Processes" id="basic-nav-dropdown">
             <NavDropdown.Item>
               <Link to="/processes/guides" className="link-menu">
@@ -51,6 +55,20 @@ const Header = () => {
             <NavDropdown.Item>
               <Link to="/processes/list" className="link-menu">
                 List
+              </Link>
+            </NavDropdown.Item>
+          </NavDropdown>
+
+          {/*--Admin--*/}
+          <NavDropdown title="Admin" id="basic-nav-dropdown">
+            <NavDropdown.Item>
+              <Link to="/admin/platform/list" className="link-menu">
+                Platform
+              </Link>
+            </NavDropdown.Item>
+            <NavDropdown.Item>
+              <Link to="/admin/factory/list" className="link-menu">
+                Factory
               </Link>
             </NavDropdown.Item>
           </NavDropdown>
