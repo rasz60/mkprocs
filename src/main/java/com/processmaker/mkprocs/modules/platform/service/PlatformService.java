@@ -6,5 +6,5 @@ import com.processmaker.mkprocs.utils.Result;
 public interface PlatformService {
 
     public Result create(PlatformDto platformDto) throws Exception ;
-    public Result read();
+    public Result read() throws Exception;
 }

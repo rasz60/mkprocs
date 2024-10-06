@@ -31,6 +31,13 @@ public class PlatformController {
 
     @GetMapping("list")
     public Result read() {
-        return platformService.read();
+        Result rst = null;
+        try {
+            rst = platformService.read();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            rst = new Result(500, "시스템 오류");
+        }
+        return rst;
     }
 }

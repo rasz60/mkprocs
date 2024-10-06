@@ -7,6 +7,7 @@ import com.processmaker.mkprocs.modules.platform.service.PlatformService;
 import com.processmaker.mkprocs.utils.Result;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,14 @@ public class PlatformServiceImpl implements PlatformService {
         return rst;
     }
 
-    public Result read() {
+    public Result read() throws Exception {
         Result rst = new Result();
+        Map<String, Object> result = new HashMap<>();
+
+        List<Platform> platforms = platformRepository.findAll();
+        result.put("pfList", platforms);
+
+        rst = new Result(200, result, "조회 성공.");
 
         return rst;
     }
