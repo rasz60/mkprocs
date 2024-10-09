@@ -34,7 +34,7 @@ public class PlatformServiceImpl implements PlatformService {
     }
 
     public Result read() throws Exception {
-        Result rst = new Result();
+        Result rst = null;
         Map<String, Object> result = new HashMap<>();
 
         List<Platform> platforms = platformRepository.findAll();

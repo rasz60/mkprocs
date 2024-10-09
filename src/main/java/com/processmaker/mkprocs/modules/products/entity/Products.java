@@ -1,10 +1,12 @@
 package com.processmaker.mkprocs.modules.products.entity;
 
 import com.processmaker.mkprocs.modules.factory.entity.Factory;
+import com.processmaker.mkprocs.modules.products.dto.ProductsDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 
@@ -16,28 +18,52 @@ import java.time.LocalDateTime;
 public class Products {
 
     @Id
+    @GenericGenerator(name="uuid2", strategy = "uuid2")
     @GeneratedValue(generator = "uuid2")
+    @Column(columnDefinition = "VARCHAR(100)")
     private String pdNum;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "fcNum", name = "pdFcInfo")
-    private Factory pd_fc_info;
+    @JoinColumn(referencedColumnName = "fcNum", name="pdFcInfo")
+    private Factory pdFcInfo;
 
     @Column(columnDefinition = "VARCHAR(1000)")
-    private String pd_name;
+    private String pdName;
 
-    @Column(columnDefinition = "VARCHAR(100)")
-    private String pd_category;
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "pdCategoryNum", name="pdCategoryInfo")
+    private ProductCategory pdCategoryInfo;
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "pdColorNum", name="pdColorInfo")
+    private ProductColors pdColorInfo;
 
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime pd_regist_date;
+    private LocalDateTime pdRegistDate;
 
     @Column(columnDefinition = "INT")
-    private int pd_price;
+    private int pdPrice;
 
     @Column(columnDefinition = "VARCHAR(1)")
-    private String pd_state;
+    private String pdState;
 
     @Column(columnDefinition = "INT")
-    private int pd_mount;
+    private int pdMount;
+
+    public Products() {}
+
+    public static Products of(ProductsDto productsDto) {
+        Products pd = new Products();
+
+        pd.setPdNum(productsDto.getPdNum());
+        pd.setPdFcInfo(productsDto.getPdFcInfo());
+        pd.setPdName(productsDto.getPdName());
+        pd.setPdCategoryInfo(productsDto.getPdCategoryInfo());
+        pd.setPdRegistDate(productsDto.getPdRegistDate());
+        pd.setPdPrice(productsDto.getPdPrice());
+        pd.setPdState(productsDto.getPdState());
+        pd.setPdMount(productsDto.getPdMount());
+
+        return pd;
+    }
 }

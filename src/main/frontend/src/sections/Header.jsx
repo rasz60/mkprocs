@@ -71,6 +71,11 @@ const Header = () => {
                 Factory
               </Link>
             </NavDropdown.Item>
+            <NavDropdown.Item>
+              <Link to="/admin/product/list" className="link-menu">
+                Product
+              </Link>
+            </NavDropdown.Item>
           </NavDropdown>
         </Nav>
       </Navbar.Collapse>

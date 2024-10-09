@@ -84,14 +84,14 @@ const PlatformForm = () => {
         </Col>
         <Col md>
           <Form.Group className="form-box">
-            <Form.Label htmlFor="platformEndDate">End Date</Form.Label>
+            <Form.Label htmlFor="pfEndDate">End Date</Form.Label>
             <Form.Control
               type="date"
               id="pfEndDate"
-              aria-describedby="endDateDesc"
+              aria-describedby="pfEndDateDesc"
               required
             />
-            <Form.Text id="endDateDesc" muted>
+            <Form.Text id="pfEndDateDesc" muted>
               종료일을 입력해주세요.
             </Form.Text>
           </Form.Group>
