@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
@@ -7,6 +7,46 @@ import { useNavigate } from "react-router-dom";
 
 const ProductForm = () => {
   const [validated, setValidated] = useState(false);
+  const [factories, setFactories] = useState(null);
+  const [platforms, setPlatforms] = useState(null);
+  const [colors, setProductColors] = useState(null);
+
+  useEffect(() => {
+    factoryList();
+  }, []);
+
+  useEffect(() => {
+    const selectFc = document.querySelector("#pdFcNum");
+
+    selectFc.innerHTML = "";
+
+    const optionEle = document.createElement("option");
+    optionEle.value = "";
+    optionEle.textContent = "제조사를 선택해주세요.";
+    selectFc.appendChild(optionEle);
+
+    if (factories != null) {
+      for (var i = 0; i < factories.length; i++) {
+        const optionEle = document.createElement("option");
+        optionEle.value = factories[i].fcNum;
+        optionEle.textContent = factories[i].fcName;
+        selectFc.appendChild(optionEle);
+      }
+    }
+  }, [factories]);
+
+  const factoryList = async () => {
+    let url = "/rest/fc/list";
+    let res = await fetch(url);
+    let resJson = await res.json();
+
+    let fcList = resJson.result.fcList;
+
+    if (fcList != null) {
+      setFactories(fcList);
+    }
+  };
+
   const navigate = useNavigate();
 
   const fnSave = async () => {
@@ -73,7 +113,9 @@ const ProductForm = () => {
         <Col md>
           <Form.Group className="form-box">
             <Form.Label htmlFor="pdFcNum">Factory</Form.Label>
-            <Form.Select id="pdFcNum" aria-describedby="pdFcNumDesc" required />
+            <Form.Select id="pdFcNum" aria-describedby="pdFcNumDesc" required>
+              <option value="">선택해주세요.</option>
+            </Form.Select>
             <Form.Text id="pdFcNumDesc" muted>
               제조사를 입력해주세요.
             </Form.Text>
