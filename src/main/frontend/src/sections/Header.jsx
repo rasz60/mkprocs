@@ -76,6 +76,11 @@ const Header = () => {
                 Product
               </Link>
             </NavDropdown.Item>
+            <NavDropdown.Item>
+              <Link to="/admin/product/category/list" className="link-menu">
+                Category
+              </Link>
+            </NavDropdown.Item>
           </NavDropdown>
         </Nav>
       </Navbar.Collapse>

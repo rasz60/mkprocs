@@ -69,7 +69,7 @@ const ProductForm = () => {
 
     if (data.resultCode === 200) {
       alert(data.resultMessage);
-      navigate("/");
+      navigate("/admin/product/list");
     }
   };
 
@@ -82,7 +82,6 @@ const ProductForm = () => {
       event.preventDefault();
       event.stopPropagation();
     } else {
-      console.log("?");
       event.preventDefault();
       fnSave();
     }

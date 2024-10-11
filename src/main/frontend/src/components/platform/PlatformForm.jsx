@@ -27,7 +27,7 @@ const PlatformForm = () => {
 
     if (data.resultCode === 200) {
       alert(data.resultMessage);
-      navigate("/");
+      navigate("/admin/platform/list");
     }
   };
 
@@ -40,7 +40,6 @@ const PlatformForm = () => {
       event.preventDefault();
       event.stopPropagation();
     } else {
-      console.log("?");
       event.preventDefault();
       fnSave();
     }

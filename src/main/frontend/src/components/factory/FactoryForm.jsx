@@ -27,7 +27,7 @@ const FactoryForm = () => {
 
     if (data.resultCode === 200) {
       alert(data.resultMessage);
-      navigate("/");
+      navigate("/admin/factory/list");
     }
   };
 

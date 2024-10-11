@@ -11,6 +11,9 @@ const PlatformLayout = lazy(() =>
 );
 const FactoryLayout = lazy(() => import("./components/factory/FactoryLayout"));
 const ProductLayout = lazy(() => import("./components/product/ProductLayout"));
+const CategoryLayout = lazy(() =>
+  import("./components/product/category/CategoryLayout")
+);
 const Not = lazy(() => import("./components/Not"));
 
 const App = () => {
@@ -24,6 +27,10 @@ const App = () => {
           <Route path="/admin/platform/*" element={<PlatformLayout />} />
           <Route path="/admin/factory/*" element={<FactoryLayout />} />
           <Route path="/admin/product/*" element={<ProductLayout />} />
+          <Route
+            path="/admin/product/category/*"
+            element={<CategoryLayout />}
+          />
           <Route path="/*" element={<Not />} />
         </Routes>
       </Suspense>

@@ -3,6 +3,7 @@ package com.processmaker.mkprocs.modules.products.service.impl;
 import com.processmaker.mkprocs.modules.products.dto.ProductCategoryDto;
 import com.processmaker.mkprocs.modules.products.entity.ProductCategory;
 import com.processmaker.mkprocs.modules.products.repository.ProductCategoryRepository;
+import com.processmaker.mkprocs.modules.products.service.ProductCategoryService;
 import com.processmaker.mkprocs.utils.Result;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,10 +13,10 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class ProductCategoryServiceImpl {
+public class ProductCategoryServiceImpl implements ProductCategoryService {
 
     private final ProductCategoryRepository productCategoryRepository;
-
+    @Override
     public Result create(ProductCategoryDto productCategoryDto) throws Exception {
         Result rst = null;
         ProductCategory pdct = null;
@@ -23,7 +24,7 @@ public class ProductCategoryServiceImpl {
         String parentNum = productCategoryDto.getPdParentCategoryNum();
 
         if (! "".equals(parentNum) ) {
-            Optional<ProductCategory> opPdct = productCategoryRepository.findById();
+            Optional<ProductCategory> opPdct = productCategoryRepository.findById(productCategoryDto.getPdCategoryNum());
 
             if (opPdct.isPresent()) {
                 ProductCategory parentPdct = opPdct.get();
@@ -43,13 +44,16 @@ public class ProductCategoryServiceImpl {
 
         return rst;
     }
-
+    @Override
     public Result read() throws Exception {
         Result rst = null;
 
-        List<ProductCategory> categories = productCategoryRepository.findAll();
-        
-        // dto List로 변환
+        List<ProductCategoryDto> categories = ProductCategoryDto.of(productCategoryRepository.findAll());
+
+        Map<String, Object> pdCtList = new HashMap<>();
+        pdCtList.put("pdCtList", categories);
+
+        rst = new Result(200, pdCtList, "조회 성공." );
 
         return rst;
     }

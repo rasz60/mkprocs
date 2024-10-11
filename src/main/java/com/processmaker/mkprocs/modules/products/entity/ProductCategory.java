@@ -7,6 +7,9 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @Table(name="product_category")
@@ -41,5 +44,9 @@ public class ProductCategory {
         pdcg.setPdParentCategoryInfo(productCategoryDto.getPdParentCategoryInfo());
 
         return pdcg;
+    }
+
+    public static List<ProductCategory> of(List<ProductCategoryDto> productCategoryDtoList) {
+        return productCategoryDtoList.stream().map(pdctDto -> (ProductCategory) ProductCategory.of(pdctDto)).toList();
     }
 }
