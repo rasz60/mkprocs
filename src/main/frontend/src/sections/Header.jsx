@@ -81,6 +81,11 @@ const Header = () => {
                 Category
               </Link>
             </NavDropdown.Item>
+            <NavDropdown.Item>
+              <Link to="/admin/orders/form" className="link-menu">
+                Orders
+              </Link>
+            </NavDropdown.Item>
           </NavDropdown>
         </Nav>
       </Navbar.Collapse>

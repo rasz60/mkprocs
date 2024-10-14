@@ -58,8 +58,8 @@ public class ProductServiceImpl implements ProductService {
 
     public Products setProducts(ProductsDto productsDto) throws Exception {
         setPdFcInfo(productsDto);
-        setPdColorInfo(productsDto);
-        setPdCategoryInfo(productsDto);
+        if ( productsDto.getPdColorNum() != null) setPdColorInfo(productsDto);
+        if ( productsDto.getPdCategoryNum() != null) setPdCategoryInfo(productsDto);
 
         return Products.of(productsDto);
     }

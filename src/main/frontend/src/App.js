@@ -14,6 +14,7 @@ const ProductLayout = lazy(() => import("./components/product/ProductLayout"));
 const CategoryLayout = lazy(() =>
   import("./components/product/category/CategoryLayout")
 );
+const OrderLayout = lazy(() => import("./components/order/OrderLayout"));
 const Not = lazy(() => import("./components/Not"));
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
             path="/admin/product/category/*"
             element={<CategoryLayout />}
           />
+          <Route path="/admin/orders/*" element={<OrderLayout />} />
           <Route path="/*" element={<Not />} />
         </Routes>
       </Suspense>

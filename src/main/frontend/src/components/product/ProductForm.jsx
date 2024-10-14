@@ -8,8 +8,8 @@ import { useNavigate } from "react-router-dom";
 const ProductForm = () => {
   const [validated, setValidated] = useState(false);
   const [factories, setFactories] = useState(null);
-  const [platforms, setPlatforms] = useState(null);
-  const [colors, setProductColors] = useState(null);
+  //const [platforms, setPlatforms] = useState(null);
+  //const [colors, setProductColors] = useState(null);
 
   useEffect(() => {
     factoryList();
@@ -125,11 +125,7 @@ const ProductForm = () => {
         <Col md>
           <Form.Group className="form-box">
             <Form.Label htmlFor="pdCategory">Category</Form.Label>
-            <Form.Select
-              id="pdCategory"
-              aria-describedby="pdCategoryDesc"
-              required
-            />
+            <Form.Select id="pdCategory" aria-describedby="pdCategoryDesc" />
             <Form.Text id="pdCategoryDesc" muted>
               상품 카테고리을 입력해주세요.
             </Form.Text>
@@ -140,11 +136,7 @@ const ProductForm = () => {
         <Col md>
           <Form.Group className="form-box">
             <Form.Label htmlFor="pdColorNum">Color</Form.Label>
-            <Form.Select
-              id="pdColorNum"
-              aria-describedby="pdColorNumDesc"
-              required
-            />
+            <Form.Select id="pdColorNum" aria-describedby="pdColorNumDesc" />
             <Form.Text id="pdColorNumDesc" muted>
               색상을 입력해주세요.
             </Form.Text>
