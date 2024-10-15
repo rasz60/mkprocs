@@ -35,11 +35,12 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+
+	// https://moongproject.tistory.com/5
 	// https://mvnrepository.com/artifact/org.apache.poi/poi
-	implementation group: 'org.apache.poi', name: 'poi'
-	implementation group: 'org.apache.poi', name: 'poi-ooxml'
-	// https://mvnrepository.com/artifact/org.apache.tika/tika-core
-	implementation group: 'org.apache.tika', name: 'tika-core'
+	implementation 'org.apache.poi:poi:4.1.2'
+	implementation 'org.apache.poi:poi-ooxml:4.1.2'
+	implementation 'org.apache.poi:poi-scratchpad:4.1.2'
 }
 
 tasks.named('test') {
