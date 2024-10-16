@@ -33,7 +33,7 @@ const OrderForm = () => {
     let url = "/rest/od/create";
     let formData = new FormData();
 
-    formData.append("orderData", files);
+    formData.append("orderData", files[0]);
 
     let res = await fetch(url, {
       method: "POST",
