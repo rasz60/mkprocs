@@ -1,5 +1,6 @@
 //import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
+import axios from "axios";
 //import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -34,6 +35,13 @@ const OrderForm = () => {
     let formData = new FormData();
 
     formData.append("orderData", files[0]);
+
+    let res1 = await axios
+      .post(url, formData)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+
+    console.log(res1);
 
     let res = await fetch(url, {
       method: "POST",
