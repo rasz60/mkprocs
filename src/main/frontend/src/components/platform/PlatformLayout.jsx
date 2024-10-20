@@ -12,12 +12,12 @@ const PlatformLayout = () => {
     <Main title="" description="">
       <Nav variant="tabs" defaultActiveKey="list" className="mb-4">
         <Nav.Item>
-          <Nav.Link>
+          <Nav.Link eventKey="list">
             <Link to="list">List</Link>
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link>
+          <Nav.Link eventKey="form">
             <Link to="form">Form</Link>
           </Nav.Link>
         </Nav.Item>
