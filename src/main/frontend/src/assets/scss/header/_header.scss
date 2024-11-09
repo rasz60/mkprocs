@@ -1,14 +1,68 @@
-#header {
-  min-height: 10vh;
+#header-wrapper {
+  background-color: rgba(156, 39, 176, 0.5);
 
-  #logo:hover #spinner {
-    animation: rotation 3s linear infinite;
+  #header {
+    min-height: 10vh;
+
+    #logo:hover #spinner {
+      cursor: pointer;
+      animation: rotation 3s linear infinite;
+    }
+
+    #spinner {
+      color: white;
+    }
+
+    .link-menu {
+      display: inline-block;
+      width: 100%;
+    }
+  }
+}
+
+#side-menu {
+  width: 100%;
+  height: 100vh;
+  max-width: 15vw;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: rgba(131, 131, 131, 0.1);
+  transition: opacity 0.7s ease, transform 0.3s ease;
+  color: black;
+  #side-menu-header {
+    display: flex;
+    justify-content: end;
+    padding: 1em;
   }
 
-  .link-menu {
-    display: inline-block;
-    width: 100%;
+  nav {
+    margin-top: 2em;
+    background-color: whitesmoke;
+    margin-right: 0.5em;
+    border-radius: 0 1em 1em 0;
   }
+}
+
+#side-menu.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+#side-menu.hide {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.btn-menu {
+  background-color: rgba(224, 224, 224, 0.2) !important;
+  border-color: rgba(224, 224, 224, 0.1) !important;
+  color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.btn-menu:hover {
+  background-color: rgba(224, 224, 224, 0.3) !important;
+  color: white !important;
 }
 
 @keyframes rotation {

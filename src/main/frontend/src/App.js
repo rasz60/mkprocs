@@ -23,16 +23,16 @@ const App = () => {
       <Suspense fallback={<Main />}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/modules/form" element={<ModuleForm />} />
           <Route path="/processes/form" element={<ProcessForm />} />
-          <Route path="/admin/platform/*" element={<PlatformLayout />} />
-          <Route path="/admin/factory/*" element={<FactoryLayout />} />
+          <Route path="/admin/modules/form" element={<ModuleForm />} />
+          <Route path="/admin/orders/*" element={<OrderLayout />} />
           <Route path="/admin/product/*" element={<ProductLayout />} />
+          <Route path="/admin/factory/*" element={<FactoryLayout />} />
+          <Route path="/admin/platform/*" element={<PlatformLayout />} />
           <Route
             path="/admin/product/category/*"
             element={<CategoryLayout />}
           />
-          <Route path="/admin/orders/*" element={<OrderLayout />} />
           <Route path="/*" element={<Not />} />
         </Routes>
       </Suspense>
