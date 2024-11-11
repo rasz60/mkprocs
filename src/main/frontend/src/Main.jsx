@@ -1,10 +1,9 @@
-import Container from "react-bootstrap/Container";
+import { Container, Card } from "@mui/material";
 import Header from "./sections/Header";
-import Card from "react-bootstrap/Card";
 
 const Main = (props) => {
   return (
-    <Container>
+    <Container maxWidth="xxl">
       <main id="main" role="main">
         <Header />
         <Card id="content">{props.children}</Card>

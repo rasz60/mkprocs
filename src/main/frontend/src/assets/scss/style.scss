@@ -18,14 +18,42 @@ a {
   text-decoration: none !important;
 }
 
+hr {
+  border-color: rgb(0 0 0 / 15%) !important;
+  margin-top: 2em;
+}
+
 #content {
   margin-top: 1em;
-  padding: 2em;
+  padding: 2em 3em;
   min-height: 80vh;
+
+  .box-form {
+    min-height: 64vh;
+  }
+
+  .box-button-bottom {
+    display: flex;
+    justify-content: center;
+
+    button {
+      margin: 0.5em;
+    }
+  }
 }
 
 #download {
   margin-left: 80%;
+}
+
+.fc-select {
+  label {
+    left: -0.9em !important;
+  }
+
+  .MuiFormHelperText-root {
+    margin-left: 0;
+  }
 }
 
 @import "header/header";

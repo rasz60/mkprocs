@@ -22,6 +22,8 @@ import {
   ListItemIcon,
   Collapse,
   IconButton,
+  Backdrop,
+  Divider,
 } from "@mui/material";
 import {
   AlternateEmail,
@@ -42,11 +44,13 @@ const Header = () => {
   const [menu, setMenu] = useState(false);
   const [admin, setAdmin] = useState(false);
 
-  const handleMenu = () => {
+  const handleMenu = (event) => {
+    event.stopPropagation();
     setMenu(!menu);
   };
 
-  const handleAdmin = () => {
+  const handleAdmin = (event) => {
+    event.stopPropagation();
     setAdmin(!admin);
   };
 
@@ -73,68 +77,73 @@ const Header = () => {
           </Button>
         </Box>
       </Toolbar>
-      <Box
-        id="side-menu"
-        sx={{ bgcolor: "background.paper" }}
-        className={menu ? "show" : "hide"}
-      >
-        <Box id="side-menu-header">
-          <IconButton onClick={handleMenu}>
-            <Close />
-          </IconButton>
+      <Backdrop open={menu} sx={{ zIndex: 2 }} onClick={handleMenu}>
+        <Box id="side-menu" className={menu ? "show" : "hide"}>
+          <Box id="side-menu-header">
+            <IconButton onClick={handleMenu}>
+              <Close />
+            </IconButton>
+          </Box>
+          <nav aria-label="main mailbox folders">
+            <List>
+              <ListItemButton className="list-items" to="/processes/form">
+                <ListItemIcon>
+                  <MemoryRounded />
+                </ListItemIcon>
+                <ListItemText primary="Process" />
+              </ListItemButton>
+              <Divider />
+              <ListItemButton className="list-items" onClick={handleAdmin}>
+                <ListItemIcon>
+                  <SettingsSuggestRounded />
+                </ListItemIcon>
+                <ListItemText primary="Admin" />
+                {admin ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Divider />
+              <Collapse in={admin} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItemButton sx={{ pl: 4 }} to="/admin/modules/form">
+                    <ListItemIcon>
+                      <Terminal />
+                    </ListItemIcon>
+                    <ListItemText primary="Module" />
+                  </ListItemButton>
+                  <Divider />
+                  <ListItemButton sx={{ pl: 4 }} to="/admin/orders/form">
+                    <ListItemIcon>
+                      <AddShoppingCartRounded />
+                    </ListItemIcon>
+                    <ListItemText primary="Order" />
+                  </ListItemButton>
+                  <Divider />
+                  <ListItemButton sx={{ pl: 4 }} to="/admin/product/list">
+                    <ListItemIcon>
+                      <SellRounded />
+                    </ListItemIcon>
+                    <ListItemText primary="Product" />
+                  </ListItemButton>
+                  <Divider />
+                  <ListItemButton sx={{ pl: 4 }} to="/admin/factory/list">
+                    <ListItemIcon>
+                      <WarehouseRounded />
+                    </ListItemIcon>
+                    <ListItemText primary="Factory" />
+                  </ListItemButton>
+                  <Divider />
+                  <ListItemButton sx={{ pl: 4 }} to="/admin/platform/list">
+                    <ListItemIcon>
+                      <Storefront />
+                    </ListItemIcon>
+                    <ListItemText primary="Platform" />
+                  </ListItemButton>
+                  <Divider />
+                </List>
+              </Collapse>
+            </List>
+          </nav>
         </Box>
-        <nav aria-label="main mailbox folders">
-          <List>
-            <ListItemButton className="list-items" to="/processes/form">
-              <ListItemIcon>
-                <MemoryRounded />
-              </ListItemIcon>
-              <ListItemText primary="Process" />
-            </ListItemButton>
-            <ListItemButton className="list-items" onClick={handleAdmin}>
-              <ListItemIcon>
-                <SettingsSuggestRounded />
-              </ListItemIcon>
-              <ListItemText primary="Admin" />
-              {admin ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-            <Collapse in={admin} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                <ListItemButton sx={{ pl: 4 }} to="/admin/modules/form">
-                  <ListItemIcon>
-                    <Terminal />
-                  </ListItemIcon>
-                  <ListItemText primary="Module" />
-                </ListItemButton>
-                <ListItemButton sx={{ pl: 4 }} to="/admin/orders/form">
-                  <ListItemIcon>
-                    <AddShoppingCartRounded />
-                  </ListItemIcon>
-                  <ListItemText primary="Order" />
-                </ListItemButton>
-                <ListItemButton sx={{ pl: 4 }} to="/admin/product/list">
-                  <ListItemIcon>
-                    <SellRounded />
-                  </ListItemIcon>
-                  <ListItemText primary="Product" />
-                </ListItemButton>
-                <ListItemButton sx={{ pl: 4 }} to="/admin/factory/list">
-                  <ListItemIcon>
-                    <WarehouseRounded />
-                  </ListItemIcon>
-                  <ListItemText primary="Factory" />
-                </ListItemButton>
-                <ListItemButton sx={{ pl: 4 }} to="/admin/platform/list">
-                  <ListItemIcon>
-                    <Storefront />
-                  </ListItemIcon>
-                  <ListItemText primary="Platform" />
-                </ListItemButton>
-              </List>
-            </Collapse>
-          </List>
-        </nav>
-      </Box>
+      </Backdrop>
     </AppBar>
   );
 };

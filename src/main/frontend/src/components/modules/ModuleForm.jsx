@@ -1,34 +1,31 @@
 import Main from "../../Main";
-import Form from "react-bootstrap/Form";
+import { TextField, Box, Divider, Button } from "@mui/material";
 
 const ModuleForm = () => {
   return (
     <Main title="" description="">
-      <Form.Group class="form-box">
-        <Form.Label htmlFor="moduleName">Module Name</Form.Label>
-        <Form.Control
-          type="text"
+      <Box className="box-form">
+        <TextField
+          fullWidth
           id="moduleName"
-          aria-describedby="moduleNameDesc"
-          required
+          label="Module Name"
+          variant="standard"
+          className="mt-4"
+          helperText="등록할 기능의 이름을 입력해주세요."
         />
-        <Form.Text id="moduleNameDesc" muted>
-          등록할 기능의 이름을 입력해주세요.
-        </Form.Text>
-      </Form.Group>
-
-      <Form.Group class="form-box">
-        <Form.Label htmlFor="modulePath">Module Path</Form.Label>
-        <Form.Control
-          type="text"
-          id="moduleName"
-          aria-describedby="moduleNameDesc"
-          required
+        <TextField
+          fullWidth
+          id="modulePath"
+          label="Module Path"
+          variant="standard"
+          className="mt-4"
+          helperText="호출할 API의 URL을 입력해주세요."
         />
-        <Form.Text id="moduleNameDesc" muted>
-          호출할 API URL을 입력해주세요.
-        </Form.Text>
-      </Form.Group>
+      </Box>
+      <Divider />
+      <Box className="box-button-bottom">
+        <Button variant="contained">Regist</Button>
+      </Box>
     </Main>
   );
 };
