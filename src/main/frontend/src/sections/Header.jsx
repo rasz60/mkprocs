@@ -1,16 +1,5 @@
-/*
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-
-import { Link } from "react-router-dom";
-
-import { SiProcesswire } from "react-icons/si";
-*/
 import { useState } from "react";
-
 import { Link } from "react-router-dom";
-
 import {
   AppBar,
   Box,
@@ -84,9 +73,13 @@ const Header = () => {
               <Close />
             </IconButton>
           </Box>
-          <nav aria-label="main mailbox folders">
+          <nav>
             <List>
-              <ListItemButton className="list-items" to="/processes/form">
+              <ListItemButton
+                component={Link}
+                to="/processes/form"
+                className="list-items"
+              >
                 <ListItemIcon>
                   <MemoryRounded />
                 </ListItemIcon>
@@ -103,35 +96,55 @@ const Header = () => {
               <Divider />
               <Collapse in={admin} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  <ListItemButton sx={{ pl: 4 }} to="/admin/modules/form">
+                  <ListItemButton
+                    component={Link}
+                    to="/admin/modules/form"
+                    sx={{ pl: 4 }}
+                  >
                     <ListItemIcon>
                       <Terminal />
                     </ListItemIcon>
                     <ListItemText primary="Module" />
                   </ListItemButton>
                   <Divider />
-                  <ListItemButton sx={{ pl: 4 }} to="/admin/orders/form">
+                  <ListItemButton
+                    component={Link}
+                    to="/admin/orders/form"
+                    sx={{ pl: 4 }}
+                  >
                     <ListItemIcon>
                       <AddShoppingCartRounded />
                     </ListItemIcon>
                     <ListItemText primary="Order" />
                   </ListItemButton>
                   <Divider />
-                  <ListItemButton sx={{ pl: 4 }} to="/admin/product/list">
+                  <ListItemButton
+                    component={Link}
+                    to="/admin/product/list"
+                    sx={{ pl: 4 }}
+                  >
                     <ListItemIcon>
                       <SellRounded />
                     </ListItemIcon>
                     <ListItemText primary="Product" />
                   </ListItemButton>
                   <Divider />
-                  <ListItemButton sx={{ pl: 4 }} to="/admin/factory/list">
+                  <ListItemButton
+                    component={Link}
+                    to="/admin/factory/list"
+                    sx={{ pl: 4 }}
+                  >
                     <ListItemIcon>
                       <WarehouseRounded />
                     </ListItemIcon>
                     <ListItemText primary="Factory" />
                   </ListItemButton>
                   <Divider />
-                  <ListItemButton sx={{ pl: 4 }} to="/admin/platform/list">
+                  <ListItemButton
+                    component={Link}
+                    to="/admin/platform/list"
+                    sx={{ pl: 4 }}
+                  >
                     <ListItemIcon>
                       <Storefront />
                     </ListItemIcon>

@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 const OrderForm = () => {
   const [validated, setValidated] = useState(false);
   const [factories, setFactories] = useState([]);
+  //const [platforms, setPlatforms] = useState(null);
+  //const [colors, setProductColors] = useState(null);
   const [order, setOrder] = useState({
     pdName: "",
     pdFcNum: "",
@@ -22,8 +24,6 @@ const OrderForm = () => {
     pdColorNum: "",
     pdPrice: "",
   });
-  //const [platforms, setPlatforms] = useState(null);
-  //const [colors, setProductColors] = useState(null);
 
   useEffect(() => {
     factoryList();
@@ -79,14 +79,27 @@ const OrderForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const isValid = event.target.checkValidity();
-    console.log(isValid);
-    if (!isValid) {
+    validation();
+
+    if (!validated) {
       setValidated(false);
       event.stopPropagation();
     } else {
       setValidated(true);
       fnSave();
+    }
+  };
+
+  const validation = () => {
+    for (let key in order) {
+      let val = order[key];
+      console.log(key, val);
+
+      if (key === "pdName") {
+        // valid
+      }
+
+      //else if ( )
     }
   };
 
