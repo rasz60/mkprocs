@@ -3,12 +3,15 @@ server:
 
 spring:
   datasource:
+    #driver-class-name: org.sqlite.JDBC
+    #url: jdbc:sqlite:db.sqlite3
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/mkprocsDB?serverTimezone=Asia/Seoul
     username: mkprocs
     password: mkprocs1234!@
 
   jpa:
+    #database-platform: org.hibernate.dialect.SQLiteDialect
     database-platform: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
     show_sql: true

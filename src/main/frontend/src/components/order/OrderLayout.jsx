@@ -1,10 +1,7 @@
 import React, { lazy, useState, useEffect } from "react";
-import { Outlet, Routes, Route, useLocation } from "react-router-dom";
+import { Outlet, Routes, Route, useLocation, Link } from "react-router-dom";
 import { Tabs, Tab } from "@mui/material";
-
 import Main from "../../Main";
-import { Link } from "react-router-dom";
-
 const OrderList = lazy(() => import("./OrderList"));
 const OrderForm = lazy(() => import("./OrderForm"));
 const OrderExcelForm = lazy(() => import("./OrderExcelForm"));
@@ -16,16 +13,12 @@ const OrderLayout = () => {
 
   useEffect(() => {
     setTabs();
-  }, []);
+  });
 
   const setTabs = () => {
-    let pathnm = location.pathname;
-    let ntab = "0";
-    if (pathnm === "/admin/orders/form") {
-      ntab = "1";
-    } else if (pathnm === "/admin/orders/excel") {
-      ntab = "2";
-    }
+    let path = location.pathname.split("/");
+    let pathnm = path[path.length - 1];
+    let ntab = pathnm === "list" ? "0" : pathnm === "form" ? "1" : "2";
     setTab(ntab);
   };
 

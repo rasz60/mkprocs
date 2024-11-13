@@ -17,6 +17,7 @@ const OrderForm = () => {
   const [factories, setFactories] = useState([]);
   //const [platforms, setPlatforms] = useState(null);
   //const [colors, setProductColors] = useState(null);
+
   const [order, setOrder] = useState({
     pdName: "",
     pdFcNum: "",

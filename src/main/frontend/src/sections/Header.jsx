@@ -27,6 +27,7 @@ import {
   Storefront,
   Terminal,
   Close,
+  HomeRounded,
 } from "@mui/icons-material";
 
 const Header = () => {
@@ -75,6 +76,13 @@ const Header = () => {
           </Box>
           <nav>
             <List>
+              <ListItemButton component={Link} to="/" className="list-items">
+                <ListItemIcon>
+                  <HomeRounded />
+                </ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItemButton>
+              <Divider />
               <ListItemButton
                 component={Link}
                 to="/processes/form"
@@ -109,7 +117,7 @@ const Header = () => {
                   <Divider />
                   <ListItemButton
                     component={Link}
-                    to="/admin/orders/form"
+                    to="/admin/orders/list"
                     sx={{ pl: 4 }}
                   >
                     <ListItemIcon>

@@ -49,7 +49,7 @@ const FactoryForm = () => {
   };
 
   return (
-    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+    <form noValidate validated={validated} onSubmit={handleSubmit}>
       <Row>
         <Form.Group className="form-box">
           <Form.Label htmlFor="fcName">Factory Name</Form.Label>
@@ -105,7 +105,7 @@ const FactoryForm = () => {
           </Button>
         </Col>
       </Row>
-    </Form>
+    </form>
   );
 };
 

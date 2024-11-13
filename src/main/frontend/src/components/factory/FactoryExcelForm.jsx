@@ -4,16 +4,16 @@ import axios from "axios";
 import { Box, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const ProductForm = () => {
+const FactoryExcelForm = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (files) => {
     console.log(files);
 
-    let url = "/rest/pd/createBulk";
+    let url = "/rest/fc/createBulk";
     let formData = new FormData();
 
-    formData.append("productData", files[0]);
+    formData.append("factoryData", files[0]);
 
     let res1 = await axios
       .post(url, formData)
@@ -31,7 +31,7 @@ const ProductForm = () => {
 
     if (data.resultCode === 200) {
       alert(data.resultMessage);
-      navigate("/admin/product/form");
+      navigate("/admin/factory/form");
     }
   };
 
@@ -40,16 +40,16 @@ const ProductForm = () => {
       <Box>
         <TextField
           type="file"
-          id="productData"
+          id="factoryData"
           fullWidth
           onChange={(e) => handleSubmit(e.target.files)}
           required
           accept=".xlsx, .xls, .csv"
-          helperText="등록할 상품 리스트를 업로드해주세요. (.xlsx, .xls, .csv)"
+          helperText="등록할 제조사 리스트를 업로드해주세요. (.xlsx, .xls, .csv)"
         ></TextField>
       </Box>
     </form>
   );
 };
 
-export default ProductForm;
+export default FactoryExcelForm;

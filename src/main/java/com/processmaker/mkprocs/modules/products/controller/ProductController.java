@@ -6,10 +6,15 @@ import com.processmaker.mkprocs.modules.products.dto.ProductsDto;
 import com.processmaker.mkprocs.modules.products.entity.Products;
 import com.processmaker.mkprocs.modules.products.service.ProductCategoryService;
 import com.processmaker.mkprocs.modules.products.service.ProductService;
+import com.processmaker.mkprocs.utils.ExcelParser;
 import com.processmaker.mkprocs.utils.Result;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/rest/pd")
@@ -19,6 +24,7 @@ public class ProductController {
 
     public final ProductService productService;
     public final ProductCategoryService productCategoryService;
+    public final ExcelParser excelParser;
 
     @PostMapping("create")
     public Result create(@RequestBody ProductsDto productsDto) {
@@ -30,6 +36,16 @@ public class ProductController {
             rst = new Result(500, "시스템 오류 발생");
         }
         return rst;
+    }
+
+    @PostMapping("createBulk")
+    public Result create(@RequestParam("productData") MultipartFile productData) {
+        try {
+            List<Map<String, String>> parseData = excelParser.upload(productData);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return null;
     }
 
     @PostMapping("ct/create")

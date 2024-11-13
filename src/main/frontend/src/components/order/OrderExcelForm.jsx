@@ -2,11 +2,9 @@
 import axios from "axios";
 
 import { Box, TextField } from "@mui/material";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import { useNavigate } from "react-router-dom";
 
-const OrderForm = () => {
+const OrderExcelForm = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (files) => {
@@ -47,11 +45,11 @@ const OrderForm = () => {
           onChange={(e) => handleSubmit(e.target.files)}
           required
           accept=".xlsx, .xls, .csv"
-          helperText="주문할 상품 리스트를 업로드해주세요. (.xlsx, .xls, .csv)"
+          helperText="주문 리스트를 업로드해주세요. (.xlsx, .xls, .csv)"
         ></TextField>
       </Box>
     </form>
   );
 };
 
-export default OrderForm;
+export default OrderExcelForm;

@@ -1,39 +1,33 @@
 import { useEffect, useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import {
+  Box,
+  TextField,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  FormHelperText,
+  Divider,
+  Button,
+} from "@mui/material";
+import Select from "@mui/material/Select";
 import { useNavigate } from "react-router-dom";
 
 const ProductForm = () => {
   const [validated, setValidated] = useState(false);
-  const [factories, setFactories] = useState(null);
+  const [factories, setFactories] = useState([]);
   //const [platforms, setPlatforms] = useState(null);
   //const [colors, setProductColors] = useState(null);
+  const [pdDtl, setPdDtl] = useState({
+    pdName: "",
+    pdFcNum: "",
+    pdCategory: "",
+    pdColorNum: "",
+    pdPrice: "",
+  });
 
   useEffect(() => {
     factoryList();
   }, []);
-
-  useEffect(() => {
-    const selectFc = document.querySelector("#pdFcNum");
-
-    selectFc.innerHTML = "";
-
-    const optionEle = document.createElement("option");
-    optionEle.value = "";
-    optionEle.textContent = "제조사를 선택해주세요.";
-    selectFc.appendChild(optionEle);
-
-    if (factories != null) {
-      for (var i = 0; i < factories.length; i++) {
-        const optionEle = document.createElement("option");
-        optionEle.value = factories[i].fcNum;
-        optionEle.textContent = factories[i].fcName;
-        selectFc.appendChild(optionEle);
-      }
-    }
-  }, [factories]);
 
   const factoryList = async () => {
     let url = "/rest/fc/list";
@@ -73,101 +67,127 @@ const ProductForm = () => {
     }
   };
 
+  const handleChng = (event) => {
+    const { name, value } = event.target;
+
+    setPdDtl({
+      ...pdDtl,
+      [name]: value,
+    });
+  };
+
   const handleSubmit = (event) => {
-    const form = event.currentTarget;
+    event.preventDefault();
 
-    console.log(form.checkValidity());
+    validation();
 
-    if (form.checkValidity() === false) {
-      event.preventDefault();
+    if (!validated) {
+      setValidated(false);
       event.stopPropagation();
     } else {
-      event.preventDefault();
+      setValidated(true);
       fnSave();
     }
+  };
 
-    setValidated(true);
+  const validation = () => {
+    for (let key in pdDtl) {
+      let val = pdDtl[key];
+      console.log(key, val);
+
+      if (key === "pdName") {
+        // valid
+      }
+
+      //else if ( )
+    }
   };
 
   return (
-    <Form noValidate validated={validated} onSubmit={handleSubmit}>
-      <Row>
-        <Form.Group className="form-box">
-          <Form.Label htmlFor="pdName">Product Name</Form.Label>
-          <Form.Control
-            type="text"
-            id="pdName"
-            aria-describedby="pdNameDesc"
+    <form noValidate validated={validated} onSubmit={handleSubmit}>
+      <Box className="box-form">
+        <FormControl fullWidth>
+          <TextField
+            name="pdName"
+            label="Product Name"
+            variant="standard"
+            helperText="등록할 상품 이름을 입력해주세요."
+            className="mt-4"
+            value={pdDtl.pdName}
+            onChange={handleChng}
             required
           />
-          <Form.Text id="pdNameDesc" muted>
-            등록할 상품 이름을 입력해주세요.
-          </Form.Text>
-          <Form.Control.Feedback type="invalid">
-            상품 이름을 입력해주세요.
-          </Form.Control.Feedback>
-        </Form.Group>
-      </Row>
-      <Row>
-        <Col md>
-          <Form.Group className="form-box">
-            <Form.Label htmlFor="pdFcNum">Factory</Form.Label>
-            <Form.Select id="pdFcNum" aria-describedby="pdFcNumDesc" required>
-              <option value="">선택해주세요.</option>
-            </Form.Select>
-            <Form.Text id="pdFcNumDesc" muted>
-              제조사를 입력해주세요.
-            </Form.Text>
-          </Form.Group>
-        </Col>
-      </Row>
-      <Row>
-        <Col md>
-          <Form.Group className="form-box">
-            <Form.Label htmlFor="pdCategory">Category</Form.Label>
-            <Form.Select id="pdCategory" aria-describedby="pdCategoryDesc" />
-            <Form.Text id="pdCategoryDesc" muted>
-              상품 카테고리을 입력해주세요.
-            </Form.Text>
-          </Form.Group>
-        </Col>
-      </Row>
-      <Row>
-        <Col md>
-          <Form.Group className="form-box">
-            <Form.Label htmlFor="pdColorNum">Color</Form.Label>
-            <Form.Select id="pdColorNum" aria-describedby="pdColorNumDesc" />
-            <Form.Text id="pdColorNumDesc" muted>
-              색상을 입력해주세요.
-            </Form.Text>
-          </Form.Group>
-        </Col>
-      </Row>
-      <Row>
-        <Col md>
-          <Form.Group className="form-box">
-            <Form.Label htmlFor="pdPrice">Price</Form.Label>
-            <Form.Control
-              type="number"
-              id="pdPrice"
-              aria-describedby="pdPriceDesc"
-              min="1000"
-              required
-            />
-            <Form.Text id="pdPriceDesc" muted>
-              상품 가격을 입력해주세요.
-            </Form.Text>
-          </Form.Group>
-        </Col>
-      </Row>
-      <Row className="mt-3">
-        <Col md className="d-flex justify-content-end">
-          <Button className="btn-primary" type="submit">
-            등록
-          </Button>
-        </Col>
-      </Row>
-    </Form>
+        </FormControl>
+
+        <FormControl fullWidth required className="mt-4 fc-select">
+          <InputLabel htmlFor="pdFcNum">Factory</InputLabel>
+          <Select
+            name="pdFcNum"
+            variant="standard"
+            className="mt-4"
+            defaultValue=""
+            value={pdDtl.pdFcNum}
+            onChange={handleChng}
+          >
+            <MenuItem value="">선택</MenuItem>
+            {factories.map((factory) => (
+              <MenuItem value={factory.fcNum}>{factory.fcName}</MenuItem>
+            ))}
+          </Select>
+          <FormHelperText>제조사를 선택해주세요.</FormHelperText>
+        </FormControl>
+
+        <FormControl fullWidth required className="mt-4 fc-select">
+          <InputLabel htmlFor="pdCategory">Category</InputLabel>
+          <Select
+            name="pdCategory"
+            variant="standard"
+            className="mt-4"
+            defaultValue=""
+            value={pdDtl.pdCategory}
+            onChange={handleChng}
+          >
+            <MenuItem value="">선택</MenuItem>
+          </Select>
+          <FormHelperText>상품 카테고리를 선택해주세요.</FormHelperText>
+        </FormControl>
+
+        <FormControl fullWidth required className="mt-4 fc-select">
+          <InputLabel htmlFor="pdColorNum">Colors</InputLabel>
+          <Select
+            name="pdColorNum"
+            variant="standard"
+            className="mt-4"
+            defaultValue=""
+            value={pdDtl.pdColorNum}
+            onChange={handleChng}
+          >
+            <MenuItem value="">선택</MenuItem>
+          </Select>
+          <FormHelperText>상품 색상을 선택해주세요.</FormHelperText>
+        </FormControl>
+
+        <FormControl fullWidth>
+          <TextField
+            name="pdPrice"
+            label="Price"
+            variant="standard"
+            helperText="상품 가격을 입력해주세요."
+            className="mt-4"
+            value={pdDtl.pdPrice}
+            onChange={handleChng}
+            required
+          />
+        </FormControl>
+      </Box>
+
+      <Divider />
+      <Box className="box-button-bottom">
+        <Button type="submit" variant="contained">
+          Regist
+        </Button>
+      </Box>
+    </form>
   );
 };
 
