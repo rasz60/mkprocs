@@ -1,13 +1,23 @@
 import { useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  TextField,
+  FormControl,
+  InputLabel,
+  FormHelperText,
+  Divider,
+  Button,
+} from "@mui/material";
 
 const FactoryForm = () => {
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
+  const [factory, setFactory] = useState({
+    fcName: "",
+    fcStartDate: "",
+    fcEndDate: "",
+  });
 
   const fnSave = async () => {
     let url = "/rest/fc/create";
@@ -31,6 +41,14 @@ const FactoryForm = () => {
     }
   };
 
+  const handleChng = (event) => {
+    const { name, value } = event.target;
+    setFactory({
+      ...factory,
+      [name]: value,
+    });
+  };
+
   const handleSubmit = (event) => {
     const form = event.currentTarget;
 
@@ -50,61 +68,62 @@ const FactoryForm = () => {
 
   return (
     <form noValidate validated={validated} onSubmit={handleSubmit}>
-      <Row>
-        <Form.Group className="form-box">
-          <Form.Label htmlFor="fcName">Factory Name</Form.Label>
-          <Form.Control
-            type="text"
-            id="fcName"
-            aria-describedby="fcNameDesc"
+      <Box className="box-form">
+        <FormControl fullWidth>
+          <TextField
+            name="fcName"
+            label="Factory Name"
+            variant="standard"
+            helperText="등록할 제조사 이름을 입력해주세요."
+            className="mt-4"
+            value={factory.fcName}
+            onChange={handleChng}
             required
           />
-          <Form.Text id="fcNameDesc" muted>
-            등록할 제조사 이름을 입력해주세요.
-          </Form.Text>
-          <Form.Control.Feedback type="invalid">
-            제조사 이름을 입력해주세요.
-          </Form.Control.Feedback>
-        </Form.Group>
-      </Row>
-      <Row>
-        <Col md>
-          <Form.Group className="form-box">
-            <Form.Label htmlFor="fcStartDate">Start Date</Form.Label>
-            <Form.Control
-              type="date"
-              id="fcStartDate"
-              aria-describedby="fcStartDateDesc"
-              required
-            />
-            <Form.Text id="fcStartDateDesc" muted>
-              시작일을 입력해주세요.
-            </Form.Text>
-          </Form.Group>
-        </Col>
-        <Col md>
-          <Form.Group className="form-box">
-            <Form.Label htmlFor="fcEndDate">End Date</Form.Label>
-            <Form.Control
-              type="date"
-              id="fcEndDate"
-              aria-describedby="fcEndDateDesc"
-              required
-            />
-            <Form.Text id="fcEndDateDesc" muted>
-              종료일을 입력해주세요.
-            </Form.Text>
-          </Form.Group>
-        </Col>
-      </Row>
+        </FormControl>
 
-      <Row className="mt-3">
-        <Col md className="d-flex justify-content-end">
-          <Button className="btn-primary" type="submit">
-            등록
-          </Button>
-        </Col>
-      </Row>
+        <FormControl sx={{ width: 1 / 2 }} className="mt-4 fc-date">
+          <InputLabel htmlFor="fcStartDate">Start Date</InputLabel>
+          <TextField
+            sx={{ width: "85%" }}
+            type="date"
+            name="fcStartDate"
+            variant="standard"
+            className="dateTF"
+            value={factory.fcStartDate}
+            onChange={handleChng}
+            required
+          />
+          <FormHelperText>계약 시작일을 선택해주세요.</FormHelperText>
+        </FormControl>
+
+        <FormControl sx={{ width: 1 / 2 }} className="mt-4 fc-date">
+          <InputLabel htmlFor="fcEndDate">End Date</InputLabel>
+          <TextField
+            sx={{ width: "85%" }}
+            type="date"
+            name="fcEndDate"
+            variant="standard"
+            className="dateTF"
+            slotProps={{
+              input: {
+                placeHolder: "",
+              },
+            }}
+            value={factory.fcEndDate}
+            onChange={handleChng}
+            required
+          />
+          <FormHelperText>계약 종료일을 선택해주세요.</FormHelperText>
+        </FormControl>
+      </Box>
+
+      <Divider />
+      <Box className="box-button-bottom">
+        <Button type="submit" variant="contained">
+          Regist
+        </Button>
+      </Box>
     </form>
   );
 };

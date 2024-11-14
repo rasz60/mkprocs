@@ -46,7 +46,8 @@ hr {
   margin-left: 80%;
 }
 
-.fc-select {
+.fc-select,
+.fc-date {
   label {
     left: -0.9em !important;
   }
@@ -54,6 +55,10 @@ hr {
   .MuiFormHelperText-root {
     margin-left: 0;
   }
+}
+
+.dateTF {
+  margin-top: 3em !important;
 }
 
 @import "header/header";

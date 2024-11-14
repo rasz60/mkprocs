@@ -24,7 +24,7 @@ const OrderList = () => {
         <Col md>계약종료일</Col>
       </Row>
       {!orders ? (
-        <h3>등록된 플랫폼이 없습니다.</h3>
+        <h3>등록된 주문이 없습니다.</h3>
       ) : (
         orders.map((order, idx) => (
           <Row key={idx}>
