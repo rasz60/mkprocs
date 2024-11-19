@@ -10,7 +10,7 @@ const OrderExcelForm = () => {
   const handleSubmit = async (files) => {
     console.log(files);
 
-    let url = "/rest/od/create";
+    let url = "/rest/od/createBulk";
     let formData = new FormData();
 
     formData.append("orderData", files[0]);

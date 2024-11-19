@@ -14,14 +14,37 @@ import java.util.*;
 @Slf4j
 public class ExcelParser {
 
-    public List<Map<String, String>> upload(MultipartFile file) throws Exception {
-        List<Map<String, String>> parseData = new ArrayList<>();
-        Workbook workbook = null;
+    Map<String, String> valid = new HashMap<>(); // validation
+    String code = "";                            // validation code
+    String validMsg = "";                        // validation msg
+    List<Map<String, String>> parseData = new ArrayList<>(); // parsing
+
+    public Map<String, Object> upload(MultipartFile file) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+
         String ext = file.getOriginalFilename();
 
         if ( ext.contains(".") )
             ext = ext.substring(ext.lastIndexOf(".") + 1);
 
+        if ( ! "xls".equals(ext) || ! "xlsx".equals(ext) || ! "csv".equals(ext) ) {
+            code = "501";
+            validMsg = "확장자명을 확인해주세요. (.xlsx, .xls, .csv)";
+
+            valid.put("code", code);
+            valid.put("msg" , validMsg);
+        } else {
+            this.parsing(file, ext);
+        }
+
+        result.put("valid", valid);
+        result.put("parseData", parseData);
+
+        return result;
+    }
+
+    public void parsing(MultipartFile file, String ext) {
+        Workbook workbook = null;
 
         try {
             // 엑셀 97 - 2003
@@ -33,10 +56,7 @@ public class ExcelParser {
 
             // 첫 번째 시트 불러오기
             Sheet worksheet = workbook.getSheetAt(0);
-
             List<String> header = getHeader(worksheet);
-
-            System.out.println(header);
 
             for ( int i = 0; i < worksheet.getPhysicalNumberOfRows(); i++ ) {
                 Row row = worksheet.getRow(i);
@@ -61,14 +81,38 @@ public class ExcelParser {
             log.error(e.getMessage());
             throw new RuntimeException("parsing error.");
         }
-        return parseData;
     }
+
+    public void validHd() {
+        //
+    }
+    public void validFc() {
+        // 존재하는 제조사인지 (있으면 코드 매핑, 없으면 우선 신규 등록 요청 !exception)
+
+    }
+
+    public void validPd(int type) {
+        // 존재하는 상품명인지 (있으면 중복 확인 요청, 없으면 신규)
+
+    }
+
+    public void validCt() {
+        // 존재하는 상품 카테고리인지 (있으면 코드 매핑, 없으면 신규)
+
+    }
+
+    public void validCl() {
+        // 존재하는 상품 컬러인지 (있으면 코드 매핑, 없으면 신규)
+
+    }
+
 
     public List<String> getHeader(Sheet worksheet) throws Exception {
         List<String> header = new ArrayList<>();
+
+        // column 명 추출
         Row row = worksheet.getRow(worksheet.getFirstRowNum());
         if ( row != null ) {
-
             for (int i = row.getFirstCellNum(); i < row.getLastCellNum(); i++) {
                 String value = null;
                 Cell cell = row.getCell(i);

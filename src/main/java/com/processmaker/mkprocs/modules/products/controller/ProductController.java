@@ -41,7 +41,7 @@ public class ProductController {
     @PostMapping("createBulk")
     public Result create(@RequestParam("productData") MultipartFile productData) {
         try {
-            List<Map<String, String>> parseData = excelParser.upload(productData);
+            //List<Map<String, String>> parseData = excelParser.upload(productData);
         } catch (Exception e) {
             log.error(e.getMessage());
         }

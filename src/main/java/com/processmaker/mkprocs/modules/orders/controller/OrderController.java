@@ -20,10 +20,22 @@ public class OrderController {
 
     public final OrderService orderService;
     public final ExcelParser excelParser;
-    @PostMapping("create")
-    public Result create(@RequestParam("orderData") MultipartFile orderData) {
+    @PostMapping("parseBulk")
+    public Result parseBulk(@RequestParam("orderData") MultipartFile orderData) {
+        Result rst = null;
         try {
-            List<Map<String, String>> parseData = excelParser.upload(orderData);
+            rst = orderService.parseBulk(orderData);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return null;
+    }
+    @PostMapping("createBulk")
+    public Result create(@RequestParam("orderData") MultipartFile orderData) {
+        Result rst = null;
+        try {
+            //orderService.createBulk(orderData);
+            //List<Map<String, String>> parseData = excelParser.upload(orderData);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
