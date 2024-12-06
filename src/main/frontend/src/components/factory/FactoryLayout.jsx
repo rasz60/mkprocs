@@ -1,6 +1,7 @@
 import React, { lazy, useEffect, useState } from "react";
 import { Outlet, Routes, Route, Link, useLocation } from "react-router-dom";
-import { Tabs, Tab } from "@mui/material";
+import { Tabs, Tab, Grid2, Box } from "@mui/material";
+import { WarehouseRounded } from "@mui/icons-material";
 import Main from "../../Main";
 
 const FactoryForm = lazy(() => import("./FactoryForm"));

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-
+import { styled } from "@mui/material/styles";
+import { Box, Grid2, Paper } from "@mui/material";
 const FactoryList = () => {
   const [factories, setFactories] = useState(null);
 
@@ -16,25 +15,48 @@ const FactoryList = () => {
     getFactoryList();
   }, []);
 
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+    ...theme.applyStyles("dark", {
+      backgroundColor: "#1A2027",
+    }),
+  }));
+
   return (
-    <div>
-      <Row>
-        <Col md>이름</Col>
-        <Col md>계약시작일</Col>
-        <Col md>계약종료일</Col>
-      </Row>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid2 container spacing={2} id="grd-list-header">
+        <Grid2 size={4}>
+          <Item>이름</Item>
+        </Grid2>
+        <Grid2 size={4}>
+          <Item>계약시작일</Item>
+        </Grid2>
+        <Grid2 size={4}>
+          <Item>계약종료일</Item>
+        </Grid2>
+      </Grid2>
       {!factories ? (
         <h3>등록된 제조사가 없습니다.</h3>
       ) : (
         factories.map((factory, idx) => (
-          <Row key={idx}>
-            <Col md>{factory.fcName}</Col>
-            <Col md>{factory.fcStartDate}</Col>
-            <Col md>{factory.fcEndDate}</Col>
-          </Row>
+          <Grid2 container spacing={2} id={idx}>
+            <Grid2 size={4}>
+              <Item>{factory.fcName}</Item>
+            </Grid2>
+            <Grid2 size={4}>
+              <Item>{factory.fcStartDate}</Item>
+            </Grid2>
+            <Grid2 size={4}>
+              <Item>{factory.fcEndDate}</Item>
+            </Grid2>
+          </Grid2>
         ))
       )}
-    </div>
+    </Box>
   );
 };
 
