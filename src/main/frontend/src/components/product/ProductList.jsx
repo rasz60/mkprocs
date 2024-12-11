@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Box, Grid2 } from "@mui/material";
+import { ListItem } from "../../assets/js/common";
 
 const ProductList = () => {
   const [products, setProducts] = useState(null);
@@ -17,24 +17,36 @@ const ProductList = () => {
   }, []);
 
   return (
-    <div>
-      <Row>
-        <Col md>이름</Col>
-        <Col md>계약시작일</Col>
-        <Col md>계약종료일</Col>
-      </Row>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid2 container spacing={2} id="grd-list-header">
+        <Grid2 size={4}>
+          <ListItem>이름</ListItem>
+        </Grid2>
+        <Grid2 size={4}>
+          <ListItem>계약시작일</ListItem>
+        </Grid2>
+        <Grid2 size={4}>
+          <ListItem>계약종료일</ListItem>
+        </Grid2>
+      </Grid2>
       {!products ? (
         <h3>등록된 상품이 없습니다.</h3>
       ) : (
         products.map((product, idx) => (
-          <Row key={idx}>
-            <Col md>{product.pdName}</Col>
-            <Col md>{product.pdFcInfo.fcName}</Col>
-            <Col md>{product.pdMount}</Col>
-          </Row>
+          <Grid2 container spacing={2} id={idx}>
+            <Grid2 size={4}>
+              <ListItem>{product.pdName}</ListItem>
+            </Grid2>
+            <Grid2 size={4}>
+              <ListItem>{product.pdFcInfo.fcName}</ListItem>
+            </Grid2>
+            <Grid2 size={4}>
+              <ListItem>{product.pdMount}</ListItem>
+            </Grid2>
+          </Grid2>
         ))
       )}
-    </div>
+    </Box>
   );
 };
 

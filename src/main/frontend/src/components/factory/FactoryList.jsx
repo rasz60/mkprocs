@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { styled } from "@mui/material/styles";
-import { Box, Grid2, Paper } from "@mui/material";
+import { Box, Grid2 } from "@mui/material";
+import { ListItem } from "../../assets/js/common";
 const FactoryList = () => {
   const [factories, setFactories] = useState(null);
 
@@ -15,28 +15,17 @@ const FactoryList = () => {
     getFactoryList();
   }, []);
 
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: "#fff",
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-    ...theme.applyStyles("dark", {
-      backgroundColor: "#1A2027",
-    }),
-  }));
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid2 container spacing={2} id="grd-list-header">
         <Grid2 size={4}>
-          <Item>이름</Item>
+          <ListItem>이름</ListItem>
         </Grid2>
         <Grid2 size={4}>
-          <Item>계약시작일</Item>
+          <ListItem>계약시작일</ListItem>
         </Grid2>
         <Grid2 size={4}>
-          <Item>계약종료일</Item>
+          <ListItem>계약종료일</ListItem>
         </Grid2>
       </Grid2>
       {!factories ? (
@@ -45,13 +34,13 @@ const FactoryList = () => {
         factories.map((factory, idx) => (
           <Grid2 container spacing={2} id={idx}>
             <Grid2 size={4}>
-              <Item>{factory.fcName}</Item>
+              <ListItem>{factory.fcName}</ListItem>
             </Grid2>
             <Grid2 size={4}>
-              <Item>{factory.fcStartDate}</Item>
+              <ListItem>{factory.fcStartDate}</ListItem>
             </Grid2>
             <Grid2 size={4}>
-              <Item>{factory.fcEndDate}</Item>
+              <ListItem>{factory.fcEndDate}</ListItem>
             </Grid2>
           </Grid2>
         ))

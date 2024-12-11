@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Box, Grid2 } from "@mui/material";
+import { ListItem } from "../../assets/js/common";
 
 const PlatformList = () => {
   const [platforms, setPlatforms] = useState(null);
@@ -17,24 +17,36 @@ const PlatformList = () => {
   }, []);
 
   return (
-    <div>
-      <Row>
-        <Col md>이름</Col>
-        <Col md>계약시작일</Col>
-        <Col md>계약종료일</Col>
-      </Row>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid2 container spacing={2} id="grd-list-header">
+        <Grid2 size={4}>
+          <ListItem>이름</ListItem>
+        </Grid2>
+        <Grid2 size={4}>
+          <ListItem>계약시작일</ListItem>
+        </Grid2>
+        <Grid2 size={4}>
+          <ListItem>계약종료일</ListItem>
+        </Grid2>
+      </Grid2>
       {!platforms ? (
         <h3>등록된 플랫폼이 없습니다.</h3>
       ) : (
         platforms.map((platform, idx) => (
-          <Row key={idx}>
-            <Col md>{platform.pfName}</Col>
-            <Col md>{platform.pfStartDate}</Col>
-            <Col md>{platform.pfEndDate}</Col>
-          </Row>
+          <Grid2 container spacing={2} id={idx}>
+            <Grid2 size={4}>
+              <ListItem>{platform.pfName}</ListItem>
+            </Grid2>
+            <Grid2 size={4}>
+              <ListItem>{platform.pfStartDate}</ListItem>
+            </Grid2>
+            <Grid2 size={4}>
+              <ListItem>{platform.pfEndDate}</ListItem>
+            </Grid2>
+          </Grid2>
         ))
       )}
-    </div>
+    </Box>
   );
 };
 
