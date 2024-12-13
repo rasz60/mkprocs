@@ -28,18 +28,19 @@ public class OrderController {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-        return null;
+        return rst;
     }
     @PostMapping("createBulk")
     public Result create(@RequestParam("orderData") MultipartFile orderData) {
         Result rst = null;
         try {
+            rst = orderService.parseBulk(orderData);
             //orderService.createBulk(orderData);
             //List<Map<String, String>> parseData = excelParser.upload(orderData);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-        return null;
+        return rst;
     }
     @GetMapping("list")
     public Result read() {

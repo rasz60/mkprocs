@@ -21,18 +21,6 @@ const OrderExcelForm = () => {
       .catch((err) => console.log(err));
 
     console.log(res1);
-
-    let res = await fetch(url, {
-      method: "POST",
-      body: formData,
-    });
-
-    let data = await res.json();
-
-    if (data.resultCode === 200) {
-      alert(data.resultMessage);
-      navigate("/admin/order/form");
-    }
   };
 
   return (

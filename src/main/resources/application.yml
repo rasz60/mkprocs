@@ -53,3 +53,15 @@ spring:
       org:
         springframework:
           security: DEBUG
+
+root:
+  loc-path: C:/Users/jinwoong/IdeaProjects/sixtdev/
+
+
+file:
+  excel-upload:
+    path: python_modules/excel_parse/__excel/
+
+python:
+  modules:
+    excel-parser: python_modules/excel_parse/excel_parser.py
