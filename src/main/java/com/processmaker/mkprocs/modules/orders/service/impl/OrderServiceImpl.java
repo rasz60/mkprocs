@@ -4,6 +4,7 @@ import com.processmaker.mkprocs.modules.orders.entity.Orders;
 import com.processmaker.mkprocs.modules.orders.repository.OrderRepository;
 import com.processmaker.mkprocs.modules.orders.service.OrderService;
 import com.processmaker.mkprocs.utils.ExcelParser;
+import com.processmaker.mkprocs.utils.PythonModuleRunner;
 import com.processmaker.mkprocs.utils.Result;
 import com.processmaker.mkprocs.works.entity.Works;
 import com.processmaker.mkprocs.works.repository.WorksRepository;
@@ -66,29 +67,46 @@ public class OrderServiceImpl implements OrderService {
         Result rst = null;
         String workId = String.valueOf(UUID.randomUUID());
         Map<String, Object> result = new HashMap<>();
+        Works w = Works.builder()
+                .workId(workId)
+                .workType("od")
+                .workStartDate(LocalDateTime.now())
+                .build();
         try {
             // 파일 upload
             String originFileNm = orderData.getOriginalFilename();
             String extension = originFileNm.substring(originFileNm.lastIndexOf("."));
             File targetFile = new File(this.excelPath + workId + extension);
             orderData.transferTo(targetFile);
-            rst = new Result(200, result, "업로드 성공.");
+            rst = new Result(200, result, "업로드 성공");
 
-            // workID DB 저장
-            worksRepository.save(Works.builder()
-                                        .workId(workId)
-                                        .workType("od")
-                                        .workState("U")
-                                        .workStartDate(LocalDateTime.now())
-                                        .build());
-            // python 실행 : 변수 4개 필요 (파일경로, 데이터 시작 row, 엑셀 컬럼 범위, 헤더 row)
+            // workID DB 업로드 결과 저장
+            w.setWorkState("U");
+            w.setWorkResultMessage(rst.getResultMessage());
+            worksRepository.save(w);
+
+            // python 실행 : 변수 6개 필요 (모듈 경로, 테이블명, 엑셀파일경로, 데이터 시작 row, 엑셀 컬럼 범위, 헤더 row)
             String modulePath = this.excelParser;
+            rst = PythonModuleRunner.pythonModuleRun(modulePath, // 모듈 경로
+                                                    "orders", targetFile.getPath(), "2", "B:I", "0");
 
-            rst = new Result(201, result, "파싱 중.");
-
+            if ( rst.getResultCode() > 500 ) {
+                // workID DB : 파이썬 모듈 실행 실패
+                w.setWorkState("F");
+                w.setWorkEndDate(LocalDateTime.now());
+                w.setWorkResultMessage(rst.getResultMessage());
+                worksRepository.save(w);
+            }
         } catch(Exception e) {
             log.error(e.getMessage());
-            rst = new Result(500, result, "업로드 실패.");
+
+            // workID DB : 파이썬 모듈 실행 실패
+            w.setWorkState("F");
+            w.setWorkEndDate(LocalDateTime.now());
+            w.setWorkResultMessage("업로드 실패");
+            worksRepository.save(w);
+
+            rst = new Result(500, result, "업로드 실패");
         }
 
         return rst;

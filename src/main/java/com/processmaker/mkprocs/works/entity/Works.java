@@ -2,8 +2,6 @@ package com.processmaker.mkprocs.works.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.aspectj.lang.annotation.RequiredTypes;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 
