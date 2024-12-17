@@ -15,10 +15,8 @@ import org.hibernate.annotations.GenericGenerator;
 public class ProductColors {
 
     @Id
-    @GenericGenerator(name="uuid2", strategy="uuid2")
-    @GeneratedValue(generator="uuid2")
-    @Column(columnDefinition="VARCHAR(100)")
-    public String pdColorNum;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long pdColorNum;
 
     @Column(columnDefinition="VARCHAR(100)")
     public String pdColorName;

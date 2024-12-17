@@ -13,10 +13,8 @@ import java.time.LocalDateTime;
 public class Factory {
 
     @Id
-    @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @GeneratedValue(generator = "uuid2")
-    @Column(columnDefinition = "VARCHAR(100)")
-    private String fcNum;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long fcNum;
 
     @Column(columnDefinition = "VARCHAR(500)")
     private String fcName;

@@ -14,8 +14,8 @@ import org.hibernate.annotations.DynamicUpdate;
 public class Module {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    private String moduleId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long moduleId;
 
     @Column(columnDefinition = "VARCHAR(200)")
     private String moduleName;

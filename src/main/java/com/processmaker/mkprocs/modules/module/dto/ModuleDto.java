@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ModuleDto {
-    private String moduleId;
+    private Long moduleId;
     private String moduleName;
     private String modulePath;
 }

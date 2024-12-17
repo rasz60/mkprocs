@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 @Data
 public class ProductsDto {
 
-    private String pdNum;
-    private String pdFcNum;
+    private Long pdNum;
+    private Long pdFcNum;
     private Factory pdFcInfo;
     private String pdName;
-    private String pdCategoryNum;
+    private Long pdCategoryNum;
     private ProductCategory pdCategoryInfo;
-    private String pdColorNum;
+    private Long pdColorNum;
     private ProductColors pdColorInfo;
     private LocalDateTime pdRegistDate;
     private int pdPrice;

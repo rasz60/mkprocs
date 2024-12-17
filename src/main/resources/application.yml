@@ -3,16 +3,17 @@ server:
 
 spring:
   datasource:
+    #driver-class-name: com.mysql.cj.jdbc.Driver
     #driver-class-name: org.sqlite.JDBC
     #url: jdbc:sqlite:db.sqlite3
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mkprocsDB?serverTimezone=Asia/Seoul
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/mkprocsDB
     username: mkprocs
     password: mkprocs1234!@
 
   jpa:
     #database-platform: org.hibernate.dialect.SQLiteDialect
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    #database-platform: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
     show_sql: true
     hibernate:

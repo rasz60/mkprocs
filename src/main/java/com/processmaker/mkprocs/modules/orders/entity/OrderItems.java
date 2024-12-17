@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 public class OrderItems {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    private String oiNum;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long oiNum;
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(referencedColumnName="odNum", name = "oiOdInfo")

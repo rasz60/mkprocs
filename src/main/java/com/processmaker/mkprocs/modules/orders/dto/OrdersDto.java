@@ -10,9 +10,9 @@ import java.util.List;
 @Data
 public class OrdersDto {
 
-    private String odNum;
+    private Long odNum;
     private String odType;
-    private String odTargetNum;
+    private Long odTargetNum;
     List<OrderItems> oiList = new ArrayList<>();
     private LocalDateTime odDate;
     private String odState;

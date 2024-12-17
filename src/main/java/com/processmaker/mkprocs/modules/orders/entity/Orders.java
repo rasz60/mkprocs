@@ -17,14 +17,14 @@ import java.util.List;
 public class Orders {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    private String odNum;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long odNum;
 
     @Column(columnDefinition = "VARCHAR(1)")
     private String odType;
 
     @Column(columnDefinition = "VARCHAR(1000)")
-    private String odTargetNum;
+    private Long odTargetNum;
 
     @OneToMany(mappedBy = "oiOdInfo", fetch = FetchType.EAGER)
     List<OrderItems> oiList = new ArrayList<>();

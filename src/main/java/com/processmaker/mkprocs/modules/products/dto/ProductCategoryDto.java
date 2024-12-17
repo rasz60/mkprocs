@@ -6,9 +6,9 @@ import java.util.List;
 @Data
 public class ProductCategoryDto {
 
-    public String pdCategoryNum;
+    public Long pdCategoryNum;
     public int pdCategoryLevel;
-    public String pdParentCategoryNum;
+    public Long pdParentCategoryNum;
     public ProductCategory pdParentCategoryInfo;
     public String pdCategoryName;
 

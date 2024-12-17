@@ -2,7 +2,6 @@ package com.processmaker.mkprocs.modules.products.service.impl;
 
 import com.processmaker.mkprocs.modules.factory.entity.Factory;
 import com.processmaker.mkprocs.modules.factory.repository.FactoryRepository;
-import com.processmaker.mkprocs.modules.platform.entity.Platform;
 import com.processmaker.mkprocs.modules.products.dto.ProductsDto;
 import com.processmaker.mkprocs.modules.products.entity.ProductCategory;
 import com.processmaker.mkprocs.modules.products.entity.ProductColors;
@@ -33,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
         Result rst = null;
 
         Products pd = setProducts(productsDto);
-        String pdNum = productsRepository.save(pd).getPdNum();
+        Long pdNum = productsRepository.save(pd).getPdNum();
 
         Map<String, Object> result = new HashMap<>();
         result.put("pdNum", pdNum);

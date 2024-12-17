@@ -18,10 +18,8 @@ import java.util.List;
 public class ProductCategory {
 
     @Id
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @GeneratedValue(generator = "uuid2")
-    @Column(columnDefinition = "VARCHAR(100)")
-    public String pdCategoryNum;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long pdCategoryNum;
 
     @Column(columnDefinition = "INT DEFAULT 1")
     public int pdCategoryLevel;

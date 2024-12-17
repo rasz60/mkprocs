@@ -18,10 +18,8 @@ import java.time.LocalDateTime;
 public class Products {
 
     @Id
-    @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @GeneratedValue(generator = "uuid2")
-    @Column(columnDefinition = "VARCHAR(100)")
-    private String pdNum;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long pdNum;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "fcNum", name="pdFcInfo")

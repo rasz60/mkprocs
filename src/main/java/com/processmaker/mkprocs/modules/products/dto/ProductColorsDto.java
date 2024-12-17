@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class ProductColorsDto {
-    public String pdColorNum;
+    public Long pdColorNum;
     public String pdColorName;
     public String pdColorCode;
 }

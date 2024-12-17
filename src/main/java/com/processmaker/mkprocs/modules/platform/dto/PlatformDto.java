@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class PlatformDto {
-    private String pfNum;
+    private Long pfNum;
     private String pfName;
     private LocalDateTime pfStartDate;
     private LocalDateTime pfEndDate;

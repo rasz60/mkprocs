@@ -21,9 +21,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         Result rst = null;
         ProductCategory pdct = null;
 
-        String parentNum = productCategoryDto.getPdParentCategoryNum();
+        Long parentNum = productCategoryDto.getPdParentCategoryNum();
 
-        if (! "".equals(parentNum) ) {
+        if ( parentNum > -1 ) {
             Optional<ProductCategory> opPdct = productCategoryRepository.findById(productCategoryDto.getPdCategoryNum());
 
             if (opPdct.isPresent()) {
@@ -35,7 +35,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         }
 
         pdct = ProductCategory.of(productCategoryDto);
-        String pdctNum = productCategoryRepository.save(pdct).getPdCategoryNum();
+        Long pdctNum = productCategoryRepository.save(pdct).getPdCategoryNum();
 
         Map<String, Object> result = new HashMap<>();
         result.put("pdCategoryNum", pdctNum);
