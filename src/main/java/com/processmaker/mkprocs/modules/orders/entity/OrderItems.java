@@ -28,11 +28,14 @@ public class OrderItems {
     private Products oiPdInfo;
 
     @Column(columnDefinition = "INT")
-    private int oi_mount;
+    private int oiMount;
 
     @Column(columnDefinition = "INT")
-    private int oi_supply_mount;
+    private int oiSupplyMount;
 
     @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime oi_supply_date;
+    private LocalDateTime oiSupplyDate;
+
+    @Column(columnDefinition = "VARCHAR(1)")
+    private String oiState;
 }
