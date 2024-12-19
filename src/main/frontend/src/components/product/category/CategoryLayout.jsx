@@ -1,27 +1,38 @@
-import React, { lazy } from "react";
-import { Outlet, Routes, Route } from "react-router-dom";
+import React, { lazy, useEffect, useState } from "react";
+import { Outlet, Link, Routes, Route, useLocation } from "react-router-dom";
+import { Tabs, Tab } from "@mui/material";
 import Main from "../../../Main";
-import Nav from "react-bootstrap/Nav";
-import { Link } from "react-router-dom";
+
 const CategoryForm = lazy(() => import("./CategoryForm"));
 const CategoryList = lazy(() => import("./CategoryList"));
 const Not = lazy(() => import("../../Not"));
 
-const PlatformLayout = () => {
+const CategoryLayout = () => {
+  const [tab, setTab] = useState("0");
+  const location = useLocation();
+
+  useEffect(() => {
+    setTabs();
+  });
+
+  const setTabs = () => {
+    let path = location.pathname.split("/");
+    let pathnm = path[path.length - 1];
+    let ntab = pathnm === "list" ? "0" : pathnm === "form" ? "1" : "2";
+    setTab(ntab);
+  };
+
+  const tabChng = (evt, newValue) => {
+    setTab(newValue);
+  };
+
   return (
     <Main title="" description="">
-      <Nav variant="tabs" defaultActiveKey="list" className="mb-4">
-        <Nav.Item>
-          <Nav.Link>
-            <Link to="list">List</Link>
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link>
-            <Link to="form">Form</Link>
-          </Nav.Link>
-        </Nav.Item>
-      </Nav>
+      <Tabs value={tab} onChange={tabChng} className="mb-4">
+        <Tab component={Link} to="list" label="List" value="0" />
+        <Tab component={Link} to="form" label="Form" value="1" />
+      </Tabs>
+
       <Routes>
         <Route path="form" element={<CategoryForm />} />
         <Route path="list" element={<CategoryList />} />
@@ -32,4 +43,4 @@ const PlatformLayout = () => {
   );
 };
 
-export default PlatformLayout;
+export default CategoryLayout;

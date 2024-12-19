@@ -9,6 +9,7 @@ import {
   Divider,
   Button,
 } from "@mui/material";
+import axios from "axios";
 
 const FactoryForm = () => {
   const [validated, setValidated] = useState(false);
@@ -21,24 +22,27 @@ const FactoryForm = () => {
 
   const fnSave = async () => {
     let url = "/rest/fc/create";
-    let res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        fcName: document.querySelector("#fcName").value,
-        fcStartDate: new Date(document.querySelector("#fcStartDate").value),
-        fcEndDate: new Date(document.querySelector("#fcEndDate").value),
-      }),
-    });
 
-    let data = await res.json();
+    let JSONData = {
+      fcName: factory.fcName,
+      fcStartDate: new Date(factory.fcStartDate),
+      fcEndDate: new Date(factory.fcEndDate),
+    };
 
-    if (data.resultCode === 200) {
-      alert(data.resultMessage);
-      navigate("/admin/factory/list");
-    }
+    await axios
+      .post(url, JSON.stringify(JSONData), {
+        headers: { "content-type": "application/json;charset=UTF-8" },
+      })
+      .then((res) => {
+        if (res.data.resultCode === 200) {
+          alert(res.data.resultMessage);
+          navigate("/admin/factory/list");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("제조사 등록에 실패하였습니다. 시스템 관리자에게 문의해주세요.");
+      });
   };
 
   const handleChng = (event) => {
@@ -52,13 +56,10 @@ const FactoryForm = () => {
   const handleSubmit = (event) => {
     const form = event.currentTarget;
 
-    console.log(form.checkValidity());
-
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
     } else {
-      console.log("?");
       event.preventDefault();
       fnSave();
     }
@@ -71,6 +72,7 @@ const FactoryForm = () => {
       <Box className="box-form">
         <FormControl fullWidth>
           <TextField
+            id="fcName"
             name="fcName"
             label="Factory Name"
             variant="standard"
@@ -87,6 +89,7 @@ const FactoryForm = () => {
           <TextField
             sx={{ width: "85%" }}
             type="date"
+            id="fcStartDate"
             name="fcStartDate"
             variant="standard"
             className="dateTF"
@@ -102,6 +105,7 @@ const FactoryForm = () => {
           <TextField
             sx={{ width: "85%" }}
             type="date"
+            id="fcEndDate"
             name="fcEndDate"
             variant="standard"
             className="dateTF"

@@ -73,11 +73,13 @@ public class ProductController {
         return rst;
     }
 
-    @GetMapping("ct/list")
-    public Result categoryRead() {
+    @GetMapping("ct/list/{level}/{parentCategoryId}")
+    public Result categoryRead(@PathVariable(name = "level", required = true) String level
+                             , @PathVariable(name = "parentCategoryId", required = false) String parentCategoryId) {
         Result rst = null;
+        System.out.println("level : " + level + ", parentCategoryId : " +parentCategoryId);
         try {
-            rst = productCategoryService.read();
+            rst = productCategoryService.read(level, parentCategoryId);
         } catch (Exception e) {
             log.error(e.getMessage());
             rst = new Result(500, "시스템 오류 발생");

@@ -7,5 +7,5 @@ public interface ProductCategoryService {
 
     public Result create(ProductCategoryDto productCategoryDto) throws Exception;
 
-    public Result read() throws Exception;
+    public Result read(String level, String parentCategoryId) throws Exception;
 }

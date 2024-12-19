@@ -21,10 +21,16 @@ const FactoryList = () => {
         <Grid2 size={4}>
           <ListItem>이름</ListItem>
         </Grid2>
-        <Grid2 size={4}>
+        <Grid2 size={1}>
+          <ListItem>상품수</ListItem>
+        </Grid2>
+        <Grid2 size={1}>
+          <ListItem>계약상태</ListItem>
+        </Grid2>
+        <Grid2 size={3}>
           <ListItem>계약시작일</ListItem>
         </Grid2>
-        <Grid2 size={4}>
+        <Grid2 size={3}>
           <ListItem>계약종료일</ListItem>
         </Grid2>
       </Grid2>
@@ -36,10 +42,16 @@ const FactoryList = () => {
             <Grid2 size={4}>
               <ListItem>{factory.fcName}</ListItem>
             </Grid2>
-            <Grid2 size={4}>
+            <Grid2 size={1}>
+              <ListItem>{factory.pdList.length}</ListItem>
+            </Grid2>
+            <Grid2 size={1}>
+              <ListItem>{factory.fcStateName}</ListItem>
+            </Grid2>
+            <Grid2 size={3}>
               <ListItem>{factory.fcStartDate}</ListItem>
             </Grid2>
-            <Grid2 size={4}>
+            <Grid2 size={3}>
               <ListItem>{factory.fcEndDate}</ListItem>
             </Grid2>
           </Grid2>

@@ -1,5 +1,6 @@
 package com.processmaker.mkprocs.modules.products.service.impl;
 
+import ch.qos.logback.core.util.StringUtil;
 import com.processmaker.mkprocs.modules.products.dto.ProductCategoryDto;
 import com.processmaker.mkprocs.modules.products.entity.ProductCategory;
 import com.processmaker.mkprocs.modules.products.repository.ProductCategoryRepository;
@@ -45,11 +46,19 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         return rst;
     }
     @Override
-    public Result read() throws Exception {
+    public Result read(String level, String parentCategoryId) throws Exception {
         Result rst = null;
+        List<ProductCategoryDto> categories = new ArrayList<>();
+        if (StringUtil.isNullOrEmpty(parentCategoryId) ) {
+            categories = ProductCategoryDto.of(productCategoryRepository.findByPdCategoryLevel(Integer.parseInt(level)));
+        } else {
+            Optional<ProductCategory> ppd = productCategoryRepository.findById(Long.parseLong(parentCategoryId));
 
-        List<ProductCategoryDto> categories = ProductCategoryDto.of(productCategoryRepository.findAll());
+            if (ppd.isPresent()) {
+                categories = ProductCategoryDto.of(productCategoryRepository.findByPdParentCategoryInfoAndPdCategoryLevel(ppd.get(), Integer.parseInt(level)));
+            }
 
+        }
         Map<String, Object> pdCtList = new HashMap<>();
         pdCtList.put("pdCtList", categories);
 

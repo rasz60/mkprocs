@@ -88,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
             // python 실행 : 변수 6개 필요 (모듈 경로, 테이블명, 엑셀파일경로, 데이터 시작 row, 엑셀 컬럼 범위, 헤더 row)
             String modulePath = this.excelParser;
             rst = PythonModuleRunner.pythonModuleRun(modulePath, // 모듈 경로
-                                                    "orders", targetFile.getPath(), "2", "B:I", "0");
+                                                    "orders", targetFile.getPath(), "2", "C:I", "0");
 
             if ( rst.getResultCode() > 500 ) {
                 // workID DB : 파이썬 모듈 실행 실패

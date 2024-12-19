@@ -1,4 +1,3 @@
-//import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { Box, TextField } from "@mui/material";
@@ -8,31 +7,23 @@ const FactoryExcelForm = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (files) => {
-    console.log(files);
-
     let url = "/rest/fc/createBulk";
     let formData = new FormData();
 
     formData.append("factoryData", files[0]);
 
-    let res1 = await axios
+    await axios
       .post(url, formData)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-
-    console.log(res1);
-
-    let res = await fetch(url, {
-      method: "POST",
-      body: formData,
-    });
-
-    let data = await res.json();
-
-    if (data.resultCode === 200) {
-      alert(data.resultMessage);
-      navigate("/admin/factory/form");
-    }
+      .then((res) => {
+        if (res.data.resultCode === 200) {
+          alert(res.data.resultMessage);
+          navigate("/admin/factory/list");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("제조사 일괄 등록에 실패하였습니다.");
+      });
   };
 
   return (

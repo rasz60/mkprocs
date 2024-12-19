@@ -8,7 +8,9 @@ import {
   FormHelperText,
   Divider,
   Button,
+  Grid2,
 } from "@mui/material";
+import { Add } from "@mui/icons-material";
 import Select from "@mui/material/Select";
 import { useNavigate } from "react-router-dom";
 
@@ -118,54 +120,95 @@ const ProductForm = () => {
             required
           />
         </FormControl>
+        <Grid2 container>
+          <Grid2 size={11.3}>
+            <FormControl fullWidth required className="mt-4 fc-select">
+              <InputLabel htmlFor="pdFcNum">Factory</InputLabel>
+              <Select
+                name="pdFcNum"
+                variant="standard"
+                className="mt-4"
+                defaultValue=""
+                value={pdDtl.pdFcNum}
+                onChange={handleChng}
+              >
+                <MenuItem value="">선택</MenuItem>
+                {factories.map((factory) => (
+                  <MenuItem value={factory.fcNum}>{factory.fcName}</MenuItem>
+                ))}
+              </Select>
+              <FormHelperText>제조사를 선택해주세요.</FormHelperText>
+            </FormControl>
+          </Grid2>
+          <Grid2 className="row-side-btn-box" size={0.7}>
+            <Button
+              variant="outlined"
+              startIcon={<Add />}
+              size="small"
+              onClick={() => navigate("/admin/factory/form")}
+            >
+              추가
+            </Button>
+          </Grid2>
+        </Grid2>
 
-        <FormControl fullWidth required className="mt-4 fc-select">
-          <InputLabel htmlFor="pdFcNum">Factory</InputLabel>
-          <Select
-            name="pdFcNum"
-            variant="standard"
-            className="mt-4"
-            defaultValue=""
-            value={pdDtl.pdFcNum}
-            onChange={handleChng}
-          >
-            <MenuItem value="">선택</MenuItem>
-            {factories.map((factory) => (
-              <MenuItem value={factory.fcNum}>{factory.fcName}</MenuItem>
-            ))}
-          </Select>
-          <FormHelperText>제조사를 선택해주세요.</FormHelperText>
-        </FormControl>
+        <Grid2 container>
+          <Grid2 size={11.3}>
+            <FormControl fullWidth required className="mt-4 fc-select">
+              <InputLabel htmlFor="pdCategory">Category</InputLabel>
+              <Select
+                name="pdCategory"
+                variant="standard"
+                className="mt-4"
+                defaultValue=""
+                value={pdDtl.pdCategory}
+                onChange={handleChng}
+              >
+                <MenuItem value="">선택</MenuItem>
+              </Select>
+              <FormHelperText>상품 카테고리를 선택해주세요.</FormHelperText>
+            </FormControl>
+          </Grid2>
+          <Grid2 className="row-side-btn-box" size={0.7}>
+            <Button
+              variant="outlined"
+              startIcon={<Add />}
+              size="small"
+              onClick={() => navigate("/admin/product/category/form")}
+            >
+              추가
+            </Button>
+          </Grid2>
+        </Grid2>
 
-        <FormControl fullWidth required className="mt-4 fc-select">
-          <InputLabel htmlFor="pdCategory">Category</InputLabel>
-          <Select
-            name="pdCategory"
-            variant="standard"
-            className="mt-4"
-            defaultValue=""
-            value={pdDtl.pdCategory}
-            onChange={handleChng}
-          >
-            <MenuItem value="">선택</MenuItem>
-          </Select>
-          <FormHelperText>상품 카테고리를 선택해주세요.</FormHelperText>
-        </FormControl>
-
-        <FormControl fullWidth required className="mt-4 fc-select">
-          <InputLabel htmlFor="pdColorNum">Colors</InputLabel>
-          <Select
-            name="pdColorNum"
-            variant="standard"
-            className="mt-4"
-            defaultValue=""
-            value={pdDtl.pdColorNum}
-            onChange={handleChng}
-          >
-            <MenuItem value="">선택</MenuItem>
-          </Select>
-          <FormHelperText>상품 색상을 선택해주세요.</FormHelperText>
-        </FormControl>
+        <Grid2 container>
+          <Grid2 size={11.3}>
+            <FormControl fullWidth required className="mt-4 fc-select">
+              <InputLabel htmlFor="pdColorNum">Colors</InputLabel>
+              <Select
+                name="pdColorNum"
+                variant="standard"
+                className="mt-4"
+                defaultValue=""
+                value={pdDtl.pdColorNum}
+                onChange={handleChng}
+              >
+                <MenuItem value="">선택</MenuItem>
+              </Select>
+              <FormHelperText>상품 색상을 선택해주세요.</FormHelperText>
+            </FormControl>
+          </Grid2>
+          <Grid2 className="row-side-btn-box" size={0.7}>
+            <Button
+              variant="outlined"
+              startIcon={<Add />}
+              size="small"
+              onClick={() => navigate("/admin/product/color/form")}
+            >
+              추가
+            </Button>
+          </Grid2>
+        </Grid2>
 
         <FormControl fullWidth>
           <TextField

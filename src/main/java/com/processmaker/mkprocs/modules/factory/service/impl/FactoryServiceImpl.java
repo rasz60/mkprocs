@@ -38,6 +38,11 @@ public class FactoryServiceImpl implements FactoryService {
         Map<String, Object> result = new HashMap<>();
 
         List<Factory> factories = factoryRepository.findAll();
+
+        factories.forEach(factory -> {
+            factory.setFcStateName();
+        });
+
         result.put("fcList", factories);
 
         rst = new Result(200, result, "조회 성공.");

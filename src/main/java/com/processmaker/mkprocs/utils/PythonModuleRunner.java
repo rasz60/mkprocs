@@ -16,10 +16,9 @@ public class PythonModuleRunner {
             String line = "";
 
             int argsLength = args.length;
-            System.out.println(argsLength);
             if ( argsLength == 5 ) { // 변수가 5개 일 때만
                 ProcessBuilder pb = new ProcessBuilder("python", "-u", pythonPath);
-                for (int i = 1; i <= args.length; i++) {
+                for (int i = 0; i < args.length; i++) {
                     pb.command().add(args[i]); // 변수 설정
                 }
                 Process process = pb.start(); // 모듈 시작

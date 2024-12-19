@@ -1,4 +1,3 @@
-//import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { Box, TextField } from "@mui/material";
@@ -8,19 +7,23 @@ const OrderExcelForm = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (files) => {
-    console.log(files);
-
     let url = "/rest/od/createBulk";
     let formData = new FormData();
 
     formData.append("orderData", files[0]);
 
-    let res1 = await axios
+    await axios
       .post(url, formData)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-
-    console.log(res1);
+      .then((res) => {
+        if (res.data.resultCode === 200) {
+          alert(res.data.resultMessage);
+          navigate("/admin/orders/list");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("주문 일괄 등록에 실패하였습니다.");
+      });
   };
 
   return (
