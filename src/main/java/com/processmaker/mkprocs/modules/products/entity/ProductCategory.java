@@ -31,6 +31,9 @@ public class ProductCategory {
     @Column(columnDefinition = "VARCHAR(500)")
     public String pdCategoryName;
 
+    @Column(columnDefinition = "VARCHAR(1)")
+    public String pdCategoryState;
+
     public ProductCategory() {}
 
     public static ProductCategory of(ProductCategoryDto productCategoryDto) {
@@ -40,7 +43,7 @@ public class ProductCategory {
         pdcg.setPdCategoryName(productCategoryDto.getPdCategoryName());
         pdcg.setPdCategoryLevel(productCategoryDto.getPdCategoryLevel());
         pdcg.setPdParentCategoryInfo(productCategoryDto.getPdParentCategoryInfo());
-
+        pdcg.setPdCategoryState(productCategoryDto.getPdCategoryState());
         return pdcg;
     }
 

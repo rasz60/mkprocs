@@ -11,7 +11,7 @@ public class ProductCategoryDto {
     public Long pdParentCategoryNum;
     public ProductCategory pdParentCategoryInfo;
     public String pdCategoryName;
-
+    public String pdCategoryState;
 
     public ProductCategoryDto() {}
 
@@ -23,6 +23,7 @@ public class ProductCategoryDto {
         pdcDto.setPdParentCategoryNum(productCategory.getPdParentCategoryInfo().getPdCategoryNum());
         pdcDto.setPdParentCategoryInfo(productCategory.getPdParentCategoryInfo());
         pdcDto.setPdCategoryName(productCategory.getPdCategoryName());
+        pdcDto.setPdCategoryState(productCategory.getPdCategoryState());
 
         return pdcDto;
     }

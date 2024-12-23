@@ -17,6 +17,8 @@ import axios from "axios";
 const CategoryForm = () => {
   const [validated, setValidated] = useState(false);
   const [ctDtl, setCtDtl] = useState({
+    pdCategoryLv1Name: "",
+    pdCategoryLv2Name: "",
     pdCategoryName: "",
     pdParentCategoryInfo: "",
     pdCategoryLevel: "",
@@ -100,16 +102,17 @@ const CategoryForm = () => {
   };
 
   const validation = () => {
-    for (let key in ctDtl) {
-      let val = ctDtl[key];
-      console.log(key, val);
+    /*
+    let ctLv1 = ctDtl.pdCategoryLv1Name;
 
-      if (key === "pdName") {
-        // valid
+    if (key === "pdCategoryName" && key === "pdCategoryLevel") {
+      if (val === "") {
+        alert("카테고리 이름과 분류는 필수 입력 값입니다.");
+        setValidated(val !== "");
+        return;
       }
-
-      //else if ( )
     }
+    */
   };
 
   return (
@@ -129,11 +132,13 @@ const CategoryForm = () => {
                 readOnly="true"
               >
                 <MenuItem value="">선택</MenuItem>
-                {ctLv1Dtl.map((ctLv1) => (
-                  <MenuItem value={ctLv1.pdCategoryNum}>
-                    {ctLv1.pdCategoryName}
-                  </MenuItem>
-                ))}
+                {ctLv1Dtl
+                  ? ctLv1Dtl.map((ctLv1) => (
+                      <MenuItem value={ctLv1.pdCategoryNum}>
+                        {ctLv1.pdCategoryName}
+                      </MenuItem>
+                    ))
+                  : null}
               </Select>
               <FormHelperText>대분류 구분을 선택해주세요.</FormHelperText>
             </FormControl>
@@ -151,11 +156,13 @@ const CategoryForm = () => {
                 readOnly="true"
               >
                 <MenuItem value="">선택</MenuItem>
-                {ctLv2Dtl.map((ctLv2) => (
-                  <MenuItem value={ctLv2.pdCategoryNum}>
-                    {ctLv2.pdCategoryName}
-                  </MenuItem>
-                ))}
+                {ctLv2Dtl
+                  ? ctLv2Dtl.map((ctLv2) => (
+                      <MenuItem value={ctLv2.pdCategoryNum}>
+                        {ctLv2.pdCategoryName}
+                      </MenuItem>
+                    ))
+                  : null}
               </Select>
               <FormHelperText>중분류 구분을 선택해주세요.</FormHelperText>
             </FormControl>
@@ -196,111 +203,6 @@ const CategoryForm = () => {
             </FormControl>
           </Grid2>
         </Grid2>
-
-        {/* 
-        <Grid2 container>
-          <Grid2 size={11.3}>
-            <FormControl fullWidth required className="mt-4 fc-select">
-              <InputLabel htmlFor="pdFcNum">Factory</InputLabel>
-              <Select
-                name="pdFcNum"
-                variant="standard"
-                className="mt-4"
-                defaultValue=""
-                value={pdDtl.pdFcNum}
-                onChange={handleChng}
-              >
-                <MenuItem value="">선택</MenuItem>
-                {factories.map((factory) => (
-                  <MenuItem value={factory.fcNum}>{factory.fcName}</MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>제조사를 선택해주세요.</FormHelperText>
-            </FormControl>
-          </Grid2>
-          <Grid2 className="row-side-btn-box" size={0.7}>
-            <Button
-              variant="outlined"
-              startIcon={<Add />}
-              size="small"
-              onClick={() => navigate("/admin/factory/form")}
-            >
-              추가
-            </Button>
-          </Grid2>
-        </Grid2>
-
-        <Grid2 container>
-          <Grid2 size={11.3}>
-            <FormControl fullWidth required className="mt-4 fc-select">
-              <InputLabel htmlFor="pdCategory">Category</InputLabel>
-              <Select
-                name="pdCategory"
-                variant="standard"
-                className="mt-4"
-                defaultValue=""
-                value={pdDtl.pdCategory}
-                onChange={handleChng}
-              >
-                <MenuItem value="">선택</MenuItem>
-              </Select>
-              <FormHelperText>상품 카테고리를 선택해주세요.</FormHelperText>
-            </FormControl>
-          </Grid2>
-          <Grid2 className="row-side-btn-box" size={0.7}>
-            <Button
-              variant="outlined"
-              startIcon={<Add />}
-              size="small"
-              onClick={() => navigate("/admin/product/category/form")}
-            >
-              추가
-            </Button>
-          </Grid2>
-        </Grid2>
-
-        <Grid2 container>
-          <Grid2 size={11.3}>
-            <FormControl fullWidth required className="mt-4 fc-select">
-              <InputLabel htmlFor="pdColorNum">Colors</InputLabel>
-              <Select
-                name="pdColorNum"
-                variant="standard"
-                className="mt-4"
-                defaultValue=""
-                value={pdDtl.pdColorNum}
-                onChange={handleChng}
-              >
-                <MenuItem value="">선택</MenuItem>
-              </Select>
-              <FormHelperText>상품 색상을 선택해주세요.</FormHelperText>
-            </FormControl>
-          </Grid2>
-          <Grid2 className="row-side-btn-box" size={0.7}>
-            <Button
-              variant="outlined"
-              startIcon={<Add />}
-              size="small"
-              onClick={() => navigate("/admin/product/color/form")}
-            >
-              추가
-            </Button>
-          </Grid2>
-        </Grid2>
-
-        <FormControl fullWidth>
-          <TextField
-            name="pdPrice"
-            label="Price"
-            variant="standard"
-            helperText="상품 가격을 입력해주세요."
-            className="mt-4"
-            value={pdDtl.pdPrice}
-            onChange={handleChng}
-            required
-          />
-        </FormControl>
-        */}
       </Box>
 
       <Divider />

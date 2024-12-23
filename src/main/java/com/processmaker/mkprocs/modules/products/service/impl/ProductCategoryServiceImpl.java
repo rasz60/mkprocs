@@ -49,9 +49,12 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     public Result read(String level, String parentCategoryId) throws Exception {
         Result rst = null;
         List<ProductCategoryDto> categories = new ArrayList<>();
-        if (StringUtil.isNullOrEmpty(parentCategoryId) ) {
+        if ( StringUtil.isNullOrEmpty(level) && StringUtil.isNullOrEmpty(parentCategoryId)) {
+            categories = ProductCategoryDto.of(productCategoryRepository.findAll());
+        } else if (!StringUtil.isNullOrEmpty(level) && StringUtil.isNullOrEmpty(parentCategoryId) ) {
             categories = ProductCategoryDto.of(productCategoryRepository.findByPdCategoryLevel(Integer.parseInt(level)));
-        } else {
+        }
+        else {
             Optional<ProductCategory> ppd = productCategoryRepository.findById(Long.parseLong(parentCategoryId));
 
             if (ppd.isPresent()) {

@@ -74,10 +74,9 @@ public class ProductController {
     }
 
     @GetMapping("ct/list/{level}/{parentCategoryId}")
-    public Result categoryRead(@PathVariable(name = "level", required = true) String level
+    public Result categoryRead(@PathVariable(name = "level", required = false) String level
                              , @PathVariable(name = "parentCategoryId", required = false) String parentCategoryId) {
         Result rst = null;
-        System.out.println("level : " + level + ", parentCategoryId : " +parentCategoryId);
         try {
             rst = productCategoryService.read(level, parentCategoryId);
         } catch (Exception e) {
