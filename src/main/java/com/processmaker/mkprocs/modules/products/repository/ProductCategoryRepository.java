@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Long> {
+
     public List<ProductCategory> findByPdCategoryLevel(int level);
 
     public List<ProductCategory> findByPdParentCategoryInfoAndPdCategoryLevel(ProductCategory productCategory, int level);

@@ -24,18 +24,17 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
         Long parentNum = productCategoryDto.getPdParentCategoryNum();
 
-        if ( parentNum > -1 ) {
-            Optional<ProductCategory> opPdct = productCategoryRepository.findById(productCategoryDto.getPdCategoryNum());
+        Optional<ProductCategory> opPdct = productCategoryRepository.findById(parentNum);
 
-            if (opPdct.isPresent()) {
-                ProductCategory parentPdct = opPdct.get();
-                productCategoryDto.setPdParentCategoryInfo(parentPdct);
-            } else {
-                throw new RuntimeException("ParentCategoryNotFound.");
-            }
+        if (opPdct.isPresent()) {
+            ProductCategory parentPdct = opPdct.get();
+            productCategoryDto.setPdParentCategoryInfo(parentPdct);
+        } else {
+            throw new RuntimeException("ParentCategoryNotFound.");
         }
 
         pdct = ProductCategory.of(productCategoryDto);
+        pdct.setPdCategoryState("Y");
         Long pdctNum = productCategoryRepository.save(pdct).getPdCategoryNum();
 
         Map<String, Object> result = new HashMap<>();
@@ -50,7 +49,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         Result rst = null;
         List<ProductCategoryDto> categories = new ArrayList<>();
         if ( StringUtil.isNullOrEmpty(level) && StringUtil.isNullOrEmpty(parentCategoryId)) {
-            categories = ProductCategoryDto.of(productCategoryRepository.findAll());
+            categories = ProductCategoryDto.of(productCategoryRepository.findByPdCategoryLevel(1));
         } else if (!StringUtil.isNullOrEmpty(level) && StringUtil.isNullOrEmpty(parentCategoryId) ) {
             categories = ProductCategoryDto.of(productCategoryRepository.findByPdCategoryLevel(Integer.parseInt(level)));
         }

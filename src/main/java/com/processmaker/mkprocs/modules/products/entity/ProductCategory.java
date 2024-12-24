@@ -12,7 +12,11 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name="product_category")
+@Table(name="product_category",
+       uniqueConstraints = @UniqueConstraint(
+               columnNames = {"pdCategoryLevel", "pdCategoryName", "pdParentCategoryInfo"}
+       )
+)
 @DynamicInsert
 @DynamicUpdate
 public class ProductCategory {

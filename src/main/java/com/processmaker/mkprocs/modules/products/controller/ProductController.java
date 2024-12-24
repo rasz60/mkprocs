@@ -10,6 +10,7 @@ import com.processmaker.mkprocs.utils.ExcelParser;
 import com.processmaker.mkprocs.utils.Result;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,6 +54,9 @@ public class ProductController {
         Result rst = null;
         try {
             rst = productCategoryService.create(productCategoryDto);
+        } catch (DataIntegrityViolationException dive) {
+            log.error(dive.getMessage());
+            rst = new Result(500, "선택한 상위 분류에 이미 등록된 카테고리 입니다.");
         } catch (Exception e) {
             log.error(e.getMessage());
             rst = new Result(500, "시스템 오류 발생");
@@ -73,9 +77,19 @@ public class ProductController {
         return rst;
     }
 
+    @GetMapping("ct/list")
+    public Result categoryReadLevel() {
+        return categoryRead(null, null);
+    }
+
+    @GetMapping("ct/list/{level}")
+    public Result categoryReadLevel(@PathVariable(required = false) String level) {
+        return categoryRead(level, null);
+    }
+
     @GetMapping("ct/list/{level}/{parentCategoryId}")
-    public Result categoryRead(@PathVariable(name = "level", required = false) String level
-                             , @PathVariable(name = "parentCategoryId", required = false) String parentCategoryId) {
+    public Result categoryRead(@PathVariable(required = false) String level
+                             , @PathVariable(required = false) String parentCategoryId) {
         Result rst = null;
         try {
             rst = productCategoryService.read(level, parentCategoryId);

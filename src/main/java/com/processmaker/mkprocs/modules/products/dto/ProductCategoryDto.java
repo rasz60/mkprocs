@@ -20,7 +20,8 @@ public class ProductCategoryDto {
 
         pdcDto.setPdCategoryNum(productCategory.getPdCategoryNum());
         pdcDto.setPdCategoryLevel(productCategory.getPdCategoryLevel());
-        pdcDto.setPdParentCategoryNum(productCategory.getPdParentCategoryInfo().getPdCategoryNum());
+        if ( productCategory.getPdParentCategoryInfo() != null )
+            pdcDto.setPdParentCategoryNum(productCategory.getPdParentCategoryInfo().getPdCategoryNum());
         pdcDto.setPdParentCategoryInfo(productCategory.getPdParentCategoryInfo());
         pdcDto.setPdCategoryName(productCategory.getPdCategoryName());
         pdcDto.setPdCategoryState(productCategory.getPdCategoryState());

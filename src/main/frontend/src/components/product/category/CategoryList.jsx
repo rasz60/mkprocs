@@ -9,9 +9,9 @@ const CategoryList = () => {
   useEffect(() => {
     const getCategoryList = async () => {
       await axios
-        .get("/rest/pd/ct/list/" + null + "/" + null)
+        .get("/rest/pd/ct/list")
         .then((res) => {
-          setCategory(res.data.result.categoryList);
+          setCategory(res.data.result.pdCtList);
         })
         .catch((err) => {
           console.log(err);
@@ -24,10 +24,13 @@ const CategoryList = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid2 container spacing={2} id="grd-list-header">
-        <Grid2 size={6}>
-          <ListItem>분류</ListItem>
+        <Grid2 size={0.5}>
+          <ListItem>+</ListItem>
         </Grid2>
-        <Grid2 size={6}>
+        <Grid2 size={10}>
+          <ListItem>분류명</ListItem>
+        </Grid2>
+        <Grid2 size={1.5}>
           <ListItem>사용여부</ListItem>
         </Grid2>
       </Grid2>
@@ -36,10 +39,13 @@ const CategoryList = () => {
       ) : (
         categories.map((category, idx) => (
           <Grid2 container spacing={2} id={idx}>
-            <Grid2 size={6}>
+            <Grid2 size={0.5}>
+              <ListItem>{category.pdCategoryLevel}</ListItem>
+            </Grid2>
+            <Grid2 size={10}>
               <ListItem>{category.pdCategoryName}</ListItem>
             </Grid2>
-            <Grid2 size={6}>
+            <Grid2 size={1.5}>
               <ListItem>{category.pdCategoryState}</ListItem>
             </Grid2>
           </Grid2>
