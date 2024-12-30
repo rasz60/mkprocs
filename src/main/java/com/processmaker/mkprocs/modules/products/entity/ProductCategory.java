@@ -1,5 +1,6 @@
 package com.processmaker.mkprocs.modules.products.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.processmaker.mkprocs.modules.products.dto.ProductCategoryDto;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -37,6 +38,10 @@ public class ProductCategory {
 
     @Column(columnDefinition = "VARCHAR(1)")
     public String pdCategoryState;
+
+    @OneToMany(mappedBy = "pdParentCategoryInfo", fetch = FetchType.EAGER)
+    @JsonIgnore
+    List<ProductCategory> pdCategoryChild = new ArrayList<>();
 
     public ProductCategory() {}
 

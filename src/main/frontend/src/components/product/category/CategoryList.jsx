@@ -19,7 +19,26 @@ const CategoryList = () => {
     };
 
     getCategoryList();
+    sortCategories();
   }, []);
+
+  const sortCategories = () => {
+    const childMap = {};
+
+    categories.forEach((item) => {
+      if (!childMap[item.pdParentCategoryNum])
+        childMap[item.pdParentCategoryNum] = [];
+
+      childMap[item.pdParentCategoryNum].push(item);
+    });
+  };
+
+  const showChild = (event) => {
+    let targetIdx = event.currentTarget.id;
+    let targetCt = categories[targetIdx];
+
+    console.log(targetCt);
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -38,12 +57,14 @@ const CategoryList = () => {
         <h3>등록된 상품이 없습니다.</h3>
       ) : (
         categories.map((category, idx) => (
-          <Grid2 container spacing={2} id={idx}>
+          <Grid2 container key={idx} spacing={2} id={idx} onClick={showChild}>
             <Grid2 size={0.5}>
               <ListItem>{category.pdCategoryLevel}</ListItem>
             </Grid2>
             <Grid2 size={10}>
-              <ListItem>{category.pdCategoryName}</ListItem>
+              <ListItem>
+                {category.pdCategoryName} ({category.pdCategoryChildCnt})
+              </ListItem>
             </Grid2>
             <Grid2 size={1.5}>
               <ListItem>{category.pdCategoryState}</ListItem>

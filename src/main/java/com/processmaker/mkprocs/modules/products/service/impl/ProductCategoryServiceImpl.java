@@ -48,18 +48,18 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     public Result read(String level, String parentCategoryId) throws Exception {
         Result rst = null;
         List<ProductCategoryDto> categories = new ArrayList<>();
-        if ( StringUtil.isNullOrEmpty(level) && StringUtil.isNullOrEmpty(parentCategoryId)) {
-            categories = ProductCategoryDto.of(productCategoryRepository.findByPdCategoryLevel(1));
-        } else if (!StringUtil.isNullOrEmpty(level) && StringUtil.isNullOrEmpty(parentCategoryId) ) {
-            categories = ProductCategoryDto.of(productCategoryRepository.findByPdCategoryLevel(Integer.parseInt(level)));
+        if ( StringUtil.isNullOrEmpty(level) && StringUtil.isNullOrEmpty(parentCategoryId)) { // parameter 모두 빈 값일 때
+            categories = ProductCategoryDto.of(productCategoryRepository.findByPdCategoryLevel(1)); // 대분류만 조회
         }
-        else {
-            Optional<ProductCategory> ppd = productCategoryRepository.findById(Long.parseLong(parentCategoryId));
+        else if (!StringUtil.isNullOrEmpty(level) && StringUtil.isNullOrEmpty(parentCategoryId) ) { // 특정 분류 레벨만 조회 시
+            categories = ProductCategoryDto.of(productCategoryRepository.findByPdCategoryLevel(Integer.parseInt(level))); // 해당되는 분류만 조회
+        }
+        else { // parameter 모두 존재하는 경우
+            Optional<ProductCategory> ppd = productCategoryRepository.findById(Long.parseLong(parentCategoryId)); // 부모 카테고리 조회
 
-            if (ppd.isPresent()) {
+            if (ppd.isPresent()) { // 부모 카테고리가 존재하는 경우
                 categories = ProductCategoryDto.of(productCategoryRepository.findByPdParentCategoryInfoAndPdCategoryLevel(ppd.get(), Integer.parseInt(level)));
             }
-
         }
         Map<String, Object> pdCtList = new HashMap<>();
         pdCtList.put("pdCtList", categories);
