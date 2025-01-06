@@ -108,6 +108,71 @@ const ProductForm = () => {
   return (
     <form noValidate validated={validated} onSubmit={handleSubmit}>
       <Box className="box-form">
+        <Grid2 container>
+          <Grid2 size={11.3}>
+            <Grid2 container sx={{ justifyContent: "space-between" }}>
+              <Grid2 size={3.9}>
+                <FormControl fullWidth required className="mt-4 fc-select">
+                  <InputLabel htmlFor="pdCategory">대분류</InputLabel>
+                  <Select
+                    name="pdCategory"
+                    variant="standard"
+                    className="mt-4"
+                    defaultValue=""
+                    value={pdDtl.pdCategory}
+                    onChange={handleChng}
+                  >
+                    <MenuItem value="">선택</MenuItem>
+                  </Select>
+                  <FormHelperText>상품 대분류를 선택해주세요.</FormHelperText>
+                </FormControl>
+              </Grid2>
+              <Grid2 size={3.9}>
+                <FormControl fullWidth required className="mt-4 fc-select">
+                  <InputLabel htmlFor="pdCategory">중분류</InputLabel>
+                  <Select
+                    name="pdCategory"
+                    variant="standard"
+                    className="mt-4"
+                    defaultValue=""
+                    value={pdDtl.pdCategory}
+                    onChange={handleChng}
+                  >
+                    <MenuItem value="">선택</MenuItem>
+                  </Select>
+                  <FormHelperText>상품 중분류를 선택해주세요.</FormHelperText>
+                </FormControl>
+              </Grid2>
+              <Grid2 size={3.9}>
+                <FormControl fullWidth required className="mt-4 fc-select">
+                  <InputLabel htmlFor="pdCategory">소분류</InputLabel>
+                  <Select
+                    name="pdCategory"
+                    variant="standard"
+                    className="mt-4"
+                    defaultValue=""
+                    value={pdDtl.pdCategory}
+                    onChange={handleChng}
+                  >
+                    <MenuItem value="">선택</MenuItem>
+                  </Select>
+                  <FormHelperText>상품 소분류를 선택해주세요.</FormHelperText>
+                </FormControl>
+              </Grid2>
+            </Grid2>
+          </Grid2>
+          <Grid2 className="row-side-btn-box" size={0.7}>
+            <Button
+              variant="outlined"
+              startIcon={<Add />}
+              size="small"
+              onClick={() => navigate("/admin/product/category/form")}
+            >
+              추가
+            </Button>
+          </Grid2>
+        </Grid2>
+
         <FormControl fullWidth>
           <TextField
             name="pdName"
@@ -146,35 +211,6 @@ const ProductForm = () => {
               startIcon={<Add />}
               size="small"
               onClick={() => navigate("/admin/factory/form")}
-            >
-              추가
-            </Button>
-          </Grid2>
-        </Grid2>
-
-        <Grid2 container>
-          <Grid2 size={11.3}>
-            <FormControl fullWidth required className="mt-4 fc-select">
-              <InputLabel htmlFor="pdCategory">Category</InputLabel>
-              <Select
-                name="pdCategory"
-                variant="standard"
-                className="mt-4"
-                defaultValue=""
-                value={pdDtl.pdCategory}
-                onChange={handleChng}
-              >
-                <MenuItem value="">선택</MenuItem>
-              </Select>
-              <FormHelperText>상품 카테고리를 선택해주세요.</FormHelperText>
-            </FormControl>
-          </Grid2>
-          <Grid2 className="row-side-btn-box" size={0.7}>
-            <Button
-              variant="outlined"
-              startIcon={<Add />}
-              size="small"
-              onClick={() => navigate("/admin/product/category/form")}
             >
               추가
             </Button>

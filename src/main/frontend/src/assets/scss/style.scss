@@ -61,6 +61,22 @@ hr {
   margin-top: 3em !important;
 }
 
+#loading-bars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 50vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 999999;
+
+  span.MuiLinearProgress-root {
+    margin-left: 5vw;
+    margin-right: 5vw;
+  }
+}
+
 @import "header/header";
 
 // modules
@@ -72,3 +88,4 @@ hr {
 
 // list
 @import "common/list";
+@import "category/_category";

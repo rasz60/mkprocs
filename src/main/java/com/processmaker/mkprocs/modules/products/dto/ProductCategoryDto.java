@@ -12,7 +12,10 @@ public class ProductCategoryDto {
     public ProductCategory pdParentCategoryInfo;
     public String pdCategoryName;
     public String pdCategoryState;
+    public Long pdCategoryLv1Num;
+    public Long pdCategoryLv2Num;
     public int pdCategoryChildCnt;
+    public boolean pdChildOpen;
 
     public ProductCategoryDto() {}
 
@@ -26,7 +29,18 @@ public class ProductCategoryDto {
         pdcDto.setPdParentCategoryInfo(productCategory.getPdParentCategoryInfo());
         pdcDto.setPdCategoryName(productCategory.getPdCategoryName());
         pdcDto.setPdCategoryState(productCategory.getPdCategoryState());
+        if ( productCategory.getPdCategoryLevel() > 1 ) {
+            ProductCategory pct = pdcDto.getPdParentCategoryInfo();
+            if ( productCategory.getPdCategoryLevel() == 2 ) {
+                pdcDto.setPdCategoryLv1Num(pct.getPdCategoryNum());
+            } else {
+                pdcDto.setPdCategoryLv2Num(pct.getPdCategoryNum());
+                pdcDto.setPdCategoryLv1Num(pct.getPdParentCategoryInfo().getPdCategoryNum());
+            }
+        }
+
         pdcDto.setPdCategoryChildCnt(productCategory.getPdCategoryChild().size());
+        pdcDto.setPdChildOpen(false);
         return pdcDto;
     }
 
