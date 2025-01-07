@@ -39,4 +39,17 @@
   hr {
     margin: 1.5em;
   }
+
+  #ud-buttons {
+    justify-content: flex-end;
+
+    #btns {
+      display: flex;
+      justify-content: space-between;
+
+      button {
+        width: 33%;
+      }
+    }
+  }
 }

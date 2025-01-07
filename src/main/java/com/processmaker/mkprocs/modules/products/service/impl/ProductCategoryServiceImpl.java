@@ -68,4 +68,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
         return rst;
     }
+
+    @Override
+    public Result update(ProductCategoryDto productCategoryDto) throws Exception {
+        return null;
+    }
 }

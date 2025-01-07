@@ -99,4 +99,20 @@ public class ProductController {
         }
         return rst;
     }
+
+
+    @PostMapping("ct/update")
+    public Result categoryUpdate(@RequestBody ProductCategoryDto productCategoryDto) {
+        Result rst = null;
+        try {
+            rst = productCategoryService.update(productCategoryDto);
+        } catch (DataIntegrityViolationException dive) {
+            log.error(dive.getMessage());
+            rst = new Result(500, "선택한 상위 분류에 이미 등록된 카테고리 입니다.");
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            rst = new Result(500, "시스템 오류 발생");
+        }
+        return rst;
+    }
 }

@@ -16,6 +16,7 @@ public class ProductCategoryDto {
     public Long pdCategoryLv2Num;
     public int pdCategoryChildCnt;
     public boolean pdChildOpen;
+    public boolean pdParentCategoryChng;
 
     public ProductCategoryDto() {}
 
@@ -41,6 +42,7 @@ public class ProductCategoryDto {
 
         pdcDto.setPdCategoryChildCnt(productCategory.getPdCategoryChild().size());
         pdcDto.setPdChildOpen(false);
+        pdcDto.setPdParentCategoryChng(false);
         return pdcDto;
     }
 

@@ -1,11 +1,10 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import LinearProgress from "@mui/material/LinearProgress";
-
+import CircularProgress from "@mui/material/CircularProgress";
 const LinearIndeterminate = () => {
   return (
     <Box id="loading-bars">
-      <LinearProgress />
+      <CircularProgress />
     </Box>
   );
 };

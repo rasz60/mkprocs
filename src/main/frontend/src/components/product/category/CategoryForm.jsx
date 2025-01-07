@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -13,7 +13,6 @@ import {
 import Select from "@mui/material/Select";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaSleigh } from "react-icons/fa";
 
 const CategoryForm = () => {
   // validation, navigate
