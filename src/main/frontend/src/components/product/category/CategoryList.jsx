@@ -126,71 +126,96 @@ const CategoryList = () => {
       }
       // 하위 카테고리 닫았을 때
       else {
-        let gid = targetCt.pdParentCategoryNum;
-        let valid1 = false;
-        let valid2 = false;
-        let cnt = 0;
+        let gid = targetCt.pdParentCategoryNum; // 선택한 카테고리의 parent num
+        let valid = false; // 하위 카테고리 여부 flag
+        let cnt = 0; // 중단점 flag
         for (let i = 0; i < categories.length; i++) {
-          // 시작 카테고리 idx 이상일 때
-          if (i >= targetIdx) {
-            valid1 = cnt < 2; // 같은 pid 카테고리 카운트가 2보다 작을 때
-            if (valid1) {
-              valid1 = categories[i].pdParentCategoryNum === gid; // 선택한 카테고리의 pid와 같은지 확인
-              valid2 = categories[i].pdCategoryLevel >= lv; // 선택한 카테고리 분류 레벨보다 크거나 같은지 확인
-              if (valid1) cnt++; // 같으면 cnt++
-            }
-
-            if (cnt > 1) {
-              valid1 = false;
-              valid2 = false;
-            }
-
-            console.log(i, targetIdx, categories[i], cnt, gid, valid1, valid2);
+          // 시작 카테고리 idx 다음부터, 선택한 카테고리와 같은 레벨의 다음 순서 카테고리까지만 진입
+          if (i > targetIdx && cnt === 0) {
+            // 선택한 카테고리와 부모 카테고리 id가 같거나, 선택한 카테고리의 하위 레벨이 아니면 +1
+            cnt +=
+              categories[i].pdParentCategoryNum === gid ||
+              categories[i].pdCategoryLevel < lv
+                ? 1
+                : 0;
+            valid = categories[i].pdCategoryLevel >= lv; // 선택한 카테고리 분류 레벨보다 하위 레벨인지 확인
+          } else {
+            valid = false; // 카테고리 표시
           }
 
-          if (!valid1 && !valid2) {
-            nct.push(categories[i]);
+          // 중단점에 도달한 경우
+          if (cnt > 0) {
+            // 현재 idx부터 전체 추가 후 반복 종료
+            nct.push(...categories.splice(i));
+            break;
+          }
+          // 중단점에 도달하지 않은 경우
+          else {
+            // 하위 카테고리 여부가 false일 때만 표시
+            if (!valid) {
+              nct.push(categories[i]);
+            }
           }
         }
       }
-
+      // 카테고리 목록 재설정
       setCategory(nct);
     }
+
+    // 로딩 컴포넌트 종료
     loader(-1);
   };
-
+  /*
+    func : 카테고리 상세 조회
+  */
   const showDetails = async (event) => {
-    event.stopPropagation();
+    // 로딩 컴포넌트 종료
     loader(0);
 
+    // 부모 요소 event 전달 차단
+    event.stopPropagation();
+
+    // 초기화, 수정, 삭제 버튼 활성화
     let btns = document.querySelector("#ud-buttons");
     btns.className = btns.className.replace("d-none", "d-flex");
 
+    // 선택한 카테고리 정보
     let targetIdx = event.currentTarget.id;
     let targetCt = categories[targetIdx];
 
+    // 변경 전 정보 설정
     targetCt.oldCategoryLv1Num = targetCt.pdCategoryLv1Num;
     targetCt.oldCategoryLv2Num = targetCt.pdCategoryLv2Num;
     targetCt.oldCategoryLevel = targetCt.pdCategoryLevel;
     setCtDtl(targetCt);
 
+    // 상위 카테고리 정보 조회
     for (let i = 1; i < targetCt.pdCategoryLevel; i++) {
       let arr = await getCategoryList(i);
       i === 1 ? setCtLv1Dtl(arr) : setCtLv2Dtl(arr);
     }
 
+    // 로딩 컴포넌트 종료
     loader(-1);
   };
 
+  /*
+    func : 카테고리 목록 초기화
+   */
   const resetList = () => {
-    getCategoryList();
-    resetDtl();
+    getCategoryList(); // 대분류만 조회
+    resetDtl(); // 상세 조회 삭제
   };
 
+  /*
+    func : 카테고리 상세 조회 초기화
+  */
   const resetDtl = () => {
+    // 초기화, 수정, 삭제 버튼 비활성화
     let btns = document.querySelector("#ud-buttons");
     btns.className = btns.className.replace("d-flex", "d-none");
 
+    // 상세정보 value 초기화
     setCtDtl({
       oldCategoryLv1Num: 0,
       oldCategoryLv2Num: 0,
@@ -205,6 +230,9 @@ const CategoryList = () => {
     });
   };
 
+  /*
+    func : 카테고리 수정
+  */
   const updateDtl = async () => {
     await axios
       .post("/rest/pd/ct/update", ctDtl)
@@ -216,22 +244,29 @@ const CategoryList = () => {
       });
   };
 
+  /*
+    func : 카테고리 삭제
+  */
   const deleteDtl = () => {};
 
+  /*
+    func : 카테고리 상세 페이지 버튼 클릭 시
+  */
   const handleBtns = (event) => {
     let type = event.target.id;
 
     switch (type) {
+      // 초기화 버튼
       case "btn-rst": {
         resetDtl();
         break;
       }
-
+      // 수정 버튼
       case "btn-upd": {
         updateDtl();
         break;
       }
-
+      // 삭제 버튼
       case "btn-del": {
         deleteDtl();
         break;
@@ -243,21 +278,12 @@ const CategoryList = () => {
     }
   };
 
+  /*
+    func : 페이지 로드 시
+  */
   useEffect(() => {
-    getCategoryList();
+    getCategoryList(); // 대분류만 조회
   }, []);
-
-  useEffect(() => {
-    const childMap = {};
-    if (categories) {
-      categories.forEach((item) => {
-        if (!childMap[item.pdParentCategoryNum])
-          childMap[item.pdParentCategoryNum] = [];
-
-        childMap[item.pdParentCategoryNum].push(item);
-      });
-    }
-  }, [categories]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -331,7 +357,7 @@ const CategoryList = () => {
                   variant="standard"
                   className="mt-3"
                   value={ctDtl.pdCategoryLv1Num}
-                  disabled={ctDtl.pdCategoryLv1Num ? false : true}
+                  readOnly={true}
                 >
                   {ctLv1Dtl.length > 0
                     ? ctLv1Dtl.map((ctLv1) => (
@@ -356,7 +382,7 @@ const CategoryList = () => {
                   variant="standard"
                   className="mt-3"
                   value={ctDtl.pdCategoryLv2Num}
-                  disabled={ctDtl.pdCategoryLv2Num ? false : true}
+                  readOnly={true}
                 >
                   {ctLv2Dtl.length > 0
                     ? ctLv2Dtl.map((ctLv2) => (
@@ -381,7 +407,7 @@ const CategoryList = () => {
               id="pdCategoryLevel"
               name="pdCategoryLevel"
               variant="standard"
-              disabled={ctDtl.pdCategoryNum ? false : true}
+              readOnly={true}
               value={ctDtl.pdCategoryLevel}
               onChange={(event) => handleChng(event, setCtDtl, ctDtl)}
             >
