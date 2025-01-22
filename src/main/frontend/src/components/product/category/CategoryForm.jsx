@@ -81,7 +81,7 @@ const CategoryForm = () => {
     setCtDtl({ ...ctDtl, [name]: value });
   };
 
-  /* 
+  /*
     func : 카테고리 리스트 조회 (lv = 분류단계, pid = 부모카테고리Num)
   */
   const categoryList = async (lv, pid) => {

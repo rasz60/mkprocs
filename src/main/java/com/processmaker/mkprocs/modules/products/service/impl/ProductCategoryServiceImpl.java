@@ -8,12 +8,14 @@ import com.processmaker.mkprocs.modules.products.service.ProductCategoryService;
 import com.processmaker.mkprocs.utils.Result;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.internal.log.SubSystemLogging;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductCategoryServiceImpl implements ProductCategoryService {
 
     private final ProductCategoryRepository productCategoryRepository;
@@ -71,6 +73,52 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
     @Override
     public Result update(ProductCategoryDto productCategoryDto) throws Exception {
-        return null;
+        Result rst = null;
+        int rstCode = 0;
+        String rstMsg = "";
+
+        long ctNum = productCategoryDto.getPdCategoryNum();
+        ProductCategory ct = getPresentObject(ctNum);
+        if ( ct != null ) {
+            ct.setPdCategoryName(productCategoryDto.getPdCategoryName());
+            productCategoryRepository.save(ct);
+            rstCode = 200;
+            rstMsg = "카테고리 수정에 성공했습니다.";
+        } else {
+            rstCode = 401;
+            rstMsg = "존재하지 않는 카테고리 입니다.";
+        }
+        rst = new Result(rstCode, rstMsg );
+        return rst;
+    }
+
+
+    @Override
+    public Result delete(String productCategoryNum) throws Exception {
+        Result rst = null;
+        int rstCode = 0;
+        String rstMsg = "";
+
+        ProductCategory ct = getPresentObject(Long.parseLong(productCategoryNum));
+        if ( ct != null ) {
+            productCategoryRepository.delete(ct);
+            rstCode = 200;
+            rstMsg = "카테고리 삭제에 성공했습니다.";
+        } else {
+            rstCode = 401;
+            rstMsg = "존재하지 않는 카테고리 입니다.";
+        }
+
+        rst = new Result(rstCode, rstMsg );
+        return rst;
+    }
+
+    private ProductCategory getPresentObject(long productCategoryNum) {
+        ProductCategory ct = null;
+        Optional<ProductCategory> targetCt = productCategoryRepository.findById(productCategoryNum);
+        if ( targetCt.isPresent() ) {
+            ct = targetCt.get();
+        }
+        return ct;
     }
 }

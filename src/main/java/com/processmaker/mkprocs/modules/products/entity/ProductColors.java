@@ -19,8 +19,8 @@ public class ProductColors {
     private Long pdColorNum;
 
     @Column(columnDefinition="VARCHAR(100)")
-    public String pdColorName;
+    private String pdColorName;
 
     @Column(columnDefinition="VARCHAR(100)")
-    public String pdColorCode;
+    private String pdColorCode;
 }

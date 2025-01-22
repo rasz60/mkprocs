@@ -27,21 +27,21 @@ public class ProductCategory {
     private Long pdCategoryNum;
 
     @Column(columnDefinition = "INT DEFAULT 1")
-    public int pdCategoryLevel;
+    private int pdCategoryLevel;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "pdCategoryNum", name = "pdParentCategoryInfo")
-    public ProductCategory pdParentCategoryInfo;
+    private ProductCategory pdParentCategoryInfo;
 
     @Column(columnDefinition = "VARCHAR(500)")
-    public String pdCategoryName;
+    private String pdCategoryName;
 
     @Column(columnDefinition = "VARCHAR(1)")
-    public String pdCategoryState;
+    private String pdCategoryState;
 
-    @OneToMany(mappedBy = "pdParentCategoryInfo", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "pdParentCategoryInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
-    List<ProductCategory> pdCategoryChild = new ArrayList<>();
+    private List<ProductCategory> pdCategoryChild = new ArrayList<>();
 
     public ProductCategory() {}
 

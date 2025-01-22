@@ -13,23 +13,52 @@ import {
 import { Add } from "@mui/icons-material";
 import Select from "@mui/material/Select";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ProductForm = () => {
-  const [validated, setValidated] = useState(false);
+  const [validated, setValidated] = useState("false");
   const [factories, setFactories] = useState([]);
+  // categoryLevel1, categoryLevel2 (select-box)
+  const [ctLv1Dtl, setCtLv1Dtl] = useState([]);
+  const [ctLv2Dtl, setCtLv2Dtl] = useState([]);
+  const [ctLv3Dtl, setCtLv3Dtl] = useState([]);
   //const [platforms, setPlatforms] = useState(null);
   //const [colors, setProductColors] = useState(null);
   const [pdDtl, setPdDtl] = useState({
     pdName: "",
     pdFcNum: "",
-    pdCategory: "",
+    pdCategoryLv1: "",
+    pdCategoryLv2: "",
+    pdCategoryLv3: "",
     pdColorNum: "",
     pdPrice: "",
   });
 
   useEffect(() => {
+    categoryList(1);
     factoryList();
   }, []);
+
+  const categoryList = async (lv, pid) => {
+    let url = "/rest/pd/ct/list/" + lv + (pid ? "/" + pid : "");
+    await axios
+      .get(url)
+      .then((res) => {
+        if (lv === 1) {
+          // 대분류
+          setCtLv1Dtl(res.data.result.pdCtList);
+        } else if (lv === 2) {
+          // 중분류
+          setCtLv2Dtl(res.data.result.pdCtList);
+        } else if (lv === 3) {
+          // 소분류
+          setCtLv3Dtl(res.data.result.pdCtList);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const factoryList = async () => {
     let url = "/rest/fc/list";
@@ -76,6 +105,38 @@ const ProductForm = () => {
       ...pdDtl,
       [name]: value,
     });
+
+    if (name.indexOf("pdCategory") >= 0) {
+      categoryCleanUp(name, value);
+    }
+  };
+
+  const categoryCleanUp = (name, value) => {
+    let lv = Number(name.replace("pdCategoryLv", ""));
+
+    // 상태 업데이트를 한 번에 처리
+    setPdDtl((prevPdDtl) => {
+      let updatedPdDtl = { ...prevPdDtl };
+
+      // 중분류나 소분류를 초기화
+      if (lv < 3) {
+        for (let i = lv + 1; i <= 3; i++) {
+          if (i === lv + 1 && value) {
+            categoryList(lv + 1, value);
+          }
+
+          if (i === 2) {
+            updatedPdDtl.pdCategoryLv2 = "";
+            setCtLv2Dtl([]);
+          } else {
+            updatedPdDtl.pdCategoryLv3 = "";
+            setCtLv3Dtl([]);
+          }
+        }
+      }
+
+      return updatedPdDtl;
+    });
   };
 
   const handleSubmit = (event) => {
@@ -113,48 +174,78 @@ const ProductForm = () => {
             <Grid2 container sx={{ justifyContent: "space-between" }}>
               <Grid2 size={3.9}>
                 <FormControl fullWidth required className="mt-4 fc-select">
-                  <InputLabel htmlFor="pdCategory">대분류</InputLabel>
+                  <InputLabel htmlFor="pdCategoryLv1">대분류</InputLabel>
                   <Select
-                    name="pdCategory"
+                    name="pdCategoryLv1"
                     variant="standard"
                     className="mt-4"
                     defaultValue=""
-                    value={pdDtl.pdCategory}
+                    value={pdDtl.pdCategoryLv1 || ""}
                     onChange={handleChng}
                   >
                     <MenuItem value="">선택</MenuItem>
+                    {ctLv1Dtl.length > 0
+                      ? ctLv1Dtl.map((ctLv1) => (
+                          <MenuItem
+                            key={ctLv1.pdCategoryNum}
+                            value={ctLv1.pdCategoryNum}
+                          >
+                            {ctLv1.pdCategoryName}
+                          </MenuItem>
+                        ))
+                      : null}
                   </Select>
                   <FormHelperText>상품 대분류를 선택해주세요.</FormHelperText>
                 </FormControl>
               </Grid2>
               <Grid2 size={3.9}>
                 <FormControl fullWidth required className="mt-4 fc-select">
-                  <InputLabel htmlFor="pdCategory">중분류</InputLabel>
+                  <InputLabel htmlFor="pdCategoryLv2">중분류</InputLabel>
                   <Select
-                    name="pdCategory"
+                    name="pdCategoryLv2"
                     variant="standard"
                     className="mt-4"
                     defaultValue=""
-                    value={pdDtl.pdCategory}
+                    value={pdDtl.pdCategoryLv2 || ""}
                     onChange={handleChng}
                   >
                     <MenuItem value="">선택</MenuItem>
+                    {ctLv2Dtl.length > 0
+                      ? ctLv2Dtl.map((ctLv2) => (
+                          <MenuItem
+                            key={ctLv2.pdCategoryNum}
+                            value={ctLv2.pdCategoryNum}
+                          >
+                            {ctLv2.pdCategoryName}
+                          </MenuItem>
+                        ))
+                      : null}
                   </Select>
                   <FormHelperText>상품 중분류를 선택해주세요.</FormHelperText>
                 </FormControl>
               </Grid2>
               <Grid2 size={3.9}>
                 <FormControl fullWidth required className="mt-4 fc-select">
-                  <InputLabel htmlFor="pdCategory">소분류</InputLabel>
+                  <InputLabel htmlFor="pdCategoryLv3">소분류</InputLabel>
                   <Select
-                    name="pdCategory"
+                    name="pdCategoryLv3"
                     variant="standard"
                     className="mt-4"
                     defaultValue=""
-                    value={pdDtl.pdCategory}
+                    value={pdDtl.pdCategoryLv3 || ""}
                     onChange={handleChng}
                   >
                     <MenuItem value="">선택</MenuItem>
+                    {ctLv3Dtl.length > 0
+                      ? ctLv3Dtl.map((ctLv3) => (
+                          <MenuItem
+                            key={ctLv3.pdCategoryNum}
+                            value={ctLv3.pdCategoryNum}
+                          >
+                            {ctLv3.pdCategoryName}
+                          </MenuItem>
+                        ))
+                      : null}
                   </Select>
                   <FormHelperText>상품 소분류를 선택해주세요.</FormHelperText>
                 </FormControl>
@@ -166,7 +257,7 @@ const ProductForm = () => {
               variant="outlined"
               startIcon={<Add />}
               size="small"
-              onClick={() => navigate("/admin/product/category/form")}
+              onClick={() => navigate("/admin/product/category/list")}
             >
               추가
             </Button>
@@ -194,13 +285,17 @@ const ProductForm = () => {
                 variant="standard"
                 className="mt-4"
                 defaultValue=""
-                value={pdDtl.pdFcNum}
+                value={pdDtl.pdFcNum || ""}
                 onChange={handleChng}
               >
                 <MenuItem value="">선택</MenuItem>
-                {factories.map((factory) => (
-                  <MenuItem value={factory.fcNum}>{factory.fcName}</MenuItem>
-                ))}
+                {factories.length > 0
+                  ? factories.map((factory) => (
+                      <MenuItem key={factory.fcNum} value={factory.fcNum}>
+                        {factory.fcName}
+                      </MenuItem>
+                    ))
+                  : null}
               </Select>
               <FormHelperText>제조사를 선택해주세요.</FormHelperText>
             </FormControl>
