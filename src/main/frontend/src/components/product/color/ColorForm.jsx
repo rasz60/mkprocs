@@ -9,7 +9,7 @@ import {
   Button,
   Grid2,
 } from "@mui/material";
-import { CheckCircleOutline } from "@mui/icons-material";
+import { CheckCircleOutline, Add } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Ctx } from "../../../App.js";
@@ -17,11 +17,16 @@ import { Ctx } from "../../../App.js";
 const ColorForm = () => {
   // global variants
   const { loader } = useContext(Ctx);
-  // validation, navigate
+
+  // validation, error, navigate
   const [validated, setValidated] = useState(0);
+  const [crName, setCrName] = useState({
+    error: false,
+    helperText: "색상 이름을 입력해주세요.",
+  });
   const navigate = useNavigate();
 
-  // form input, select-box
+  // input values
   const [crDtl, setCrDtl] = useState({
     pdColorNum: "",
     pdColorName: "",
@@ -35,18 +40,48 @@ const ColorForm = () => {
   const handleChng = async (event) => {
     let { name, value } = event.target;
 
-    if (name === "pdColorName" && value && !value.match(/[A-aㄱ-힣0-9]/)) {
-      alert("색상 이름은 영문, 한글, 숫자로만 입력해주세요.");
-      value = "";
-    }
-
     // 입력 값 binding
     setCrDtl({ ...crDtl, [name]: value, pdColorDupChk: false });
   };
 
+  /*
+    func : 색상 이름 최종 validation
+  */
+  const crNameValue = (event) => {
+    let { value } = event.target; // 입력 값
+    crNameValidation(value, handleChng(event));
+  };
+
+  /*
+    func : 색상 이름 validation
+  */
+  const crNameValidation = (value) => {
+    // pdColorName input 상태 변경
+    setCrName((prev) => {
+      let updateCrName = { ...prev };
+
+      let regExp = new RegExp(/^[A-Za-zㄱ-힣0-9]+$/); // 정규식
+
+      if (!regExp.test(value) && value) {
+        // 정규식 부합하지 않을 때
+        updateCrName.error = true;
+        updateCrName.helperText =
+          "한글, 영문(대/소문자), 숫자로만 입력해주세요.";
+      } else {
+        // 정규식 부합
+        updateCrName.error = false;
+        updateCrName.helperText = "색상 이름을 입력해주세요.";
+      }
+      return updateCrName;
+    });
+  };
+
+  /*
+    func : 색상 코드, 색상 명 중복 조회
+  */
   const dupchk = async () => {
     loader(0);
-    debugger;
+
     let cd = crDtl.pdColorCode.replace("#", "");
     let nm = crDtl.pdColorName;
     let dc = crDtl.pdColorDupChk;
@@ -60,21 +95,15 @@ const ColorForm = () => {
           let rst = res.data.resultCode;
           let rstMsg = res.data.resultMessage;
           alert(rstMsg);
-          if (rst !== 500) {
-            setCrDtl((prevCrDtl) => {
-              let updateCrDtl = { ...prevCrDtl };
+          setCrDtl((prevCrDtl) => {
+            let updateCrDtl = { ...prevCrDtl };
 
-              if (rst === 501) {
-                updateCrDtl.pdColorCode = "";
-              } else if (rst === 502) {
-                updateCrDtl.pdColorName = "";
-              } else if (rst === 200) {
-                updateCrDtl.pdColorDupChk = true;
-              }
+            if (rst === 200) {
+              updateCrDtl.pdColorDupChk = true;
+            }
 
-              return updateCrDtl;
-            });
-          }
+            return updateCrDtl;
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -101,15 +130,16 @@ const ColorForm = () => {
     func : 입력 값 validation
   */
   const validation = () => {
-    let crName = crDtl.pdColorName; // 색상 이름
+    let crNm = crDtl.pdColorName; // 색상 이름
+    let crNameError = crName.error; // 색상 이름 validation
     let crCode = crDtl.pdColorCode; // 색상 코드
     let crDupChk = crDtl.pdColorDupChk; // 중복 체크 여부
     let valid = 0;
     let msg = "";
 
-    if (!crName) {
+    if (!crNm) {
       msg = "색상 이름을 입력해주세요.";
-    } else if (!crName.match(/[A-a][가-힣][0-9]/)) {
+    } else if (crNameError) {
       msg = "색상 이름은 영문, 한글, 숫자로만 입력해주세요.";
     } else if (!crCode) {
       msg = "색상 코드를 선택해주세요.";
@@ -128,8 +158,8 @@ const ColorForm = () => {
     func : 저장
   */
   const fnSave = async () => {
+    loader(0);
     let url = "/rest/pd/cr/create";
-
     await axios
       .post(url, JSON.stringify(crDtl), {
         headers: {
@@ -137,18 +167,15 @@ const ColorForm = () => {
         },
       })
       .then((res) => {
+        alert(res.data.resultMessage);
         if (res.data.resultCode === 200) {
-          alert(res.data.resultMessage);
           navigate("/admin/product/color/list");
-        } else {
-          alert(res.data.resultMessage);
-          return false;
         }
       })
       .catch((err) => {
         console.log(err);
-        alert();
       });
+    loader(-1);
   };
 
   return (
@@ -203,13 +230,14 @@ const ColorForm = () => {
           <Grid2 size={10.2}>
             <FormControl fullWidth>
               <TextField
+                error={crName.error}
                 name="pdColorName"
                 label="Color Name"
                 variant="standard"
-                helperText="색상 이름을 입력해주세요."
+                helperText={crName.helperText}
                 className="mt-4"
                 value={crDtl.pdColorName}
-                onChange={handleChng}
+                onChange={crNameValue}
                 required
               />
             </FormControl>
@@ -219,7 +247,12 @@ const ColorForm = () => {
               variant="outlined"
               startIcon={<CheckCircleOutline />}
               size="small"
-              disabled={!crDtl.pdColorCode || !crDtl.pdColorName}
+              disabled={
+                !crDtl.pdColorCode ||
+                !crDtl.pdColorName ||
+                crDtl.pdColorDupChk ||
+                crName.error
+              }
               onClick={dupchk}
             >
               중복확인

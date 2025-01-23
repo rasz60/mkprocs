@@ -10,3 +10,5 @@ public interface ProductCategoryRepository extends JpaRepository<ProductCategory
 
     public List<ProductCategory> findByPdParentCategoryInfoAndPdCategoryLevel(ProductCategory productCategory, int level);
 }
+
+
