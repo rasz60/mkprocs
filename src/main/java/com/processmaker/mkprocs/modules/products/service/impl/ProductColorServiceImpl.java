@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,41 @@ public class ProductColorServiceImpl implements ProductColorService {
         result.put("pdCrList", ProductColorsDto.of(productColorsRepository.findAllByOrderByPdColorCodeAsc()));
 
         rst = new Result(200, result, "조회 성공");
+
+        return rst;
+    }
+
+    @Override
+    public Result search(String srchType, String srchKeywords) throws Exception {
+        Result rst = null;
+
+        Map<String, Object> result = new HashMap<>();
+        if ( "1".equals(srchType) ) {
+            result.put("pdCrList", ProductColorsDto.of(productColorsRepository.findByPdColorCodeLikeOrderByPdColorCodeAsc("%"+srchKeywords+"%")));
+        } else {
+            result.put("pdCrList", ProductColorsDto.of(productColorsRepository.findByPdColorNameLikeOrderByPdColorCodeAsc("%"+srchKeywords+"%")));
+        }
+
+        rst = new Result(200, result, "조회 성공");
+
+        return rst;
+    }
+
+    @Override
+    public Result delete(String pdColorNum) throws Exception {
+        Result rst = null;
+        int code = 200;
+        String msg = "";
+        Optional<ProductColors> pcr = productColorsRepository.findById(Long.parseLong(pdColorNum));
+        if ( pcr.isPresent() ) {
+            productColorsRepository.delete(pcr.get());
+            msg = "선택하신 색상을 삭제하였습니다.";
+        } else {
+            code = 401;
+            msg = "등록되지 않은 색상입니다.";
+        }
+
+        rst = new Result(code, msg);
 
         return rst;
     }

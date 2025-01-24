@@ -198,6 +198,25 @@ public class ProductController {
         }
         return rst;
     }
+
+    /**
+     * [Preview]
+     * Desc.  : 상품 색상 조회(검색)
+     * Param  : @PathVariable srchType, srchKeywords
+     * Return : Result
+     **/
+    @GetMapping("cr/list/{srchType}/{srchKeywords}")
+    public Result colorSearch(@PathVariable("srchType") String srchType,@PathVariable("srchKeywords") String srchKeywords) {
+        Result rst = null;
+        try {
+            rst = productColorService.search(srchType, srchKeywords);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            rst = new Result(500, "시스템 오류 발생");
+        }
+        return rst;
+    }
+
     /**
      * [Preview]
      * Desc.  : 상품 색상 중복 조회
@@ -227,6 +246,25 @@ public class ProductController {
         Result rst = null;
         try {
             rst = productColorService.create(productColorsDto);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            rst = new Result(500, "시스템 오류 발생");
+        }
+        return rst;
+    }
+
+
+    /**
+     * [Preview]
+     * Desc.  : 상품 색상 삭제
+     * Param  : @RequestBody pdColorsNum
+     * Return : Result
+     **/
+    @DeleteMapping("cr/delete/{pdColorNum}")
+    public Result colorDelete(@PathVariable("pdColorNum") String PdColorsNum) {
+        Result rst = null;
+        try {
+            rst = productColorService.delete(PdColorsNum);
         } catch (Exception e) {
             log.error(e.getMessage());
             rst = new Result(500, "시스템 오류 발생");

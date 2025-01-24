@@ -7,4 +7,5 @@ public interface ProductService {
 
     public Result create(ProductsDto productsDto) throws Exception;
     public Result read() throws Exception;
+
 }

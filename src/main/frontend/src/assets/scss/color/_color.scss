@@ -1,5 +1,5 @@
 #pd-color-pallete {
-  height: 50vh;
+  max-height: 50vh;
   background-color: rgba(211, 211, 211, 0.05);
   border: 1px solid #ececec;
   border-radius: 10px;
@@ -8,8 +8,19 @@
 
   .pd-color-chips {
     border: 1px solid #ececec;
+    background-color: white;
     padding-left: 0.5em;
     border-radius: 10px;
+
+    .pd-color-name {
+      font-size: 10pt;
+      overflow-x: hidden;
+      white-space: inherit;
+    }
+
+    .pd-color-delete:hover {
+      color: darkgray;
+    }
   }
 
   .pd-color-chips:hover {
