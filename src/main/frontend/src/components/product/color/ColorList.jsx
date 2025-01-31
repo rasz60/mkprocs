@@ -18,9 +18,11 @@ import {
   HighlightOff,
   CheckCircleOutline,
   Close,
+  Add
 } from "@mui/icons-material";
 import axios from "axios";
 import { Ctx } from "../../../App.js";
+import { GiFalloutShelter } from "react-icons/gi";
 
 const ColorList = () => {
   // global variants
@@ -39,7 +41,10 @@ const ColorList = () => {
     pdColorNum: "",
     pdColorName: "",
     pdColorCode: "",
+    prevPdColorName: "",
+    prevPdColorCode: "",
     pdColorDupChk: false,
+    pdColorEditFlag: false,
   });
 
   // validation, error, navigate
@@ -66,6 +71,7 @@ const ColorList = () => {
     }
 
     let arr = [];
+
     await axios
       .get(url)
       .then((res) => {
@@ -73,6 +79,7 @@ const ColorList = () => {
         if (res.data.result.pdCrList.length > 0) {
           setRows(Math.ceil(res.data.result.pdCrList.length / 6));
         }
+        setMode(true);
       })
       .catch((err) => {
         console.log(err);
@@ -173,15 +180,19 @@ const ColorList = () => {
   const dupchk = async () => {
     loader(0);
 
+    
+
     let cd = crDtl.pdColorCode.replace("#", "");
     let nm = crDtl.pdColorName;
     let dc = crDtl.pdColorDupChk;
 
-    let url = "/rest/pd/cr/dupchk/";
+    let url = "/rest/pd/cr/dupchk";
     if (cd && nm && !dc) {
-      url += cd + "/" + nm;
-      await axios
-        .get(url)
+      await axios({
+          method: "get",
+          url: url,
+          params: crDtl
+        })
         .then((res) => {
           let rst = res.data.resultCode;
           let rstMsg = res.data.resultMessage;
@@ -250,13 +261,26 @@ const ColorList = () => {
     */
   const fnSave = async () => {
     loader(0);
-    let url = "/rest/pd/cr/create";
-    await axios
-      .post(url, JSON.stringify(crDtl), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+
+    let edit = crDtl.pdColorEditFlag;
+    let url = "/rest/pd/cr/";
+    let method = "";
+    if ( !edit ) {
+      url += "/create";
+      method = "post";
+    } else {
+      url += "/update";
+      method = "put";
+    }
+
+    await axios({
+      method: method,
+      url: url,
+      data: JSON.stringify(crDtl),
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
       .then((res) => {
         alert(res.data.resultMessage);
         if (res.data.resultCode === 200) {
@@ -264,7 +288,10 @@ const ColorList = () => {
             pdColorNum: "",
             pdColorName: "",
             pdColorCode: "",
+            prevPdColorName: "",
+            prevPdColorCode: "",
             pdColorDupChk: false,
+            pdColorEditFlag: false
           });
           getColorList();
         }
@@ -274,6 +301,37 @@ const ColorList = () => {
       });
     loader(-1);
   };
+
+  const toggleColorForm = (event, type, id) => {
+    event.stopPropagation();
+
+    let target = event.target;
+
+    if ( type === 1 ) {
+      setMode(false);
+      let dtl = colors[Number(id)];
+      setCrDtl({
+        pdColorNum: dtl.pdColorNum,
+        pdColorName: dtl.pdColorName,
+        pdColorCode: dtl.pdColorCode,
+        prevPdColorName: dtl.pdColorName,
+        prevPdColorCode: dtl.pdColorCode,
+        pdColorDupChk: true,
+        pdColorEditFlag: true
+      })
+    } else {
+      setMode(type === 2);
+      setCrDtl({
+        pdColorNum: "",
+        pdColorName: "",
+        pdColorCode: "",
+        prevPdColorName: "",
+        prevPdColorCode: "",
+        pdColorDupChk: false,
+        pdColorEditFlag: false
+      })
+    }
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -320,8 +378,23 @@ const ColorList = () => {
         </Grid2>
       </Box>
       <Box id="pd-color-pallete" className="mt-2">
-        <Grid2 container spacing={2} sx={{ justifyContent: "flex-start" }}>
-          <Grid2 size={1} className="pd-color-chips"></Grid2>
+        <Grid2 container spacing={2} sx={{ justifyContent: "flex-start" }} >
+          <Grid2 size={1} className="pd-color-chips-add" onClick={(event) => toggleColorForm(event, 0)}>
+            <Grid2 container spacing={1}>
+              <Grid2 size={9}>
+                <span className="pd-color-name">
+                  추가하기
+                </span>
+              </Grid2>
+              <Grid2 size={1}>
+                <Add
+                  fontSize="small"
+                  color="primary"
+                  className="pd-color-add"
+                />
+              </Grid2>
+            </Grid2>
+          </Grid2>
 
           {rows > 0
             ? [...Array(rows)].map((_, idx) => {
@@ -335,6 +408,7 @@ const ColorList = () => {
                       size={1}
                       id={color.pdColorNum}
                       className="pd-color-chips"
+                      onClick={(event) => toggleColorForm(event, 1, s+idx)}
                     >
                       <Grid2 container spacing={1}>
                         <Grid2 size={3}>
@@ -370,6 +444,8 @@ const ColorList = () => {
             : null}
         </Grid2>
       </Box>
+
+      {/*-- 등록 form --*/}
       <form
         noValidate
         validated={validated}
@@ -383,7 +459,7 @@ const ColorList = () => {
               sx={{ display: "flex", justifyContent: "flex-end" }}
             >
               <IconButton>
-                <Close />
+                <Close onClick={(event) => toggleColorForm(event, 2)} />
               </IconButton>
             </Grid2>
             <Grid2 size={1} sx={{ marginTop: "14px" }}>
@@ -472,7 +548,7 @@ const ColorList = () => {
                 disabled={!crDtl.pdColorDupChk}
                 onClick={handleSubmit}
               >
-                등록하기
+                { crDtl.pdColorEditFlag ? "수정하기" : "등록하기" }
               </Button>
             </Grid2>
           </Grid2>

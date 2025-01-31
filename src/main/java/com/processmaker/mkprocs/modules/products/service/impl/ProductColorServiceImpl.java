@@ -24,19 +24,26 @@ public class ProductColorServiceImpl implements ProductColorService {
 
 
     @Override
-    public Result dupchk(String pdColorCode, String pdColorName) throws Exception {
+    public Result dupchk(ProductColorsDto productColorsDto) throws Exception {
         Result rst = null;
         int cnt = 0;
         int resultCode = 200;
         String resultMessage = "";
-        cnt = productColorsRepository.countByPdColorCode("#"+pdColorCode);
+
+        String pdColorCode = productColorsDto.getPdColorCode();
+        String prevColorCode = productColorsDto.getPrevPdColorCode();
+
+        cnt = pdColorCode.equals(prevColorCode) ? 0 : productColorsRepository.countByPdColorCode(pdColorCode);
         if ( cnt > 0 ) {
             resultCode = 501;
             resultMessage = "이미 등록된 색상 코드입니다.";
             return new Result(resultCode, resultMessage);
         }
 
-        cnt = productColorsRepository.countByPdColorName(pdColorName);
+        String pdColorName = productColorsDto.getPdColorName();
+        String prevPdColorName = productColorsDto.getPrevPdColorName();
+
+        cnt = pdColorName.equals(prevPdColorName) ? 0 : productColorsRepository.countByPdColorName(pdColorName);
         if ( cnt > 0 ) {
             resultCode = 502;
             resultMessage = "이미 등록된 색상 이름입니다.";
@@ -51,10 +58,11 @@ public class ProductColorServiceImpl implements ProductColorService {
 
         return rst;
     }
-
+    
+    @Override
     public Result create(ProductColorsDto productColorsDto) throws Exception {
         Result rst = null;
-        rst = dupchk(productColorsDto.getPdColorCode(), productColorsDto.pdColorName);
+        rst = dupchk(productColorsDto);
 
         if ( rst.getResultCode() == 200 ) {
             productColorsRepository.save(ProductColors.of(productColorsDto));
@@ -92,6 +100,19 @@ public class ProductColorServiceImpl implements ProductColorService {
         return rst;
     }
 
+    @Override
+    public Result update(ProductColorsDto productColorsDto) throws Exception {
+        Result rst = null;
+        rst = dupchk(productColorsDto);
+
+        if ( rst.getResultCode() == 200 ) {
+            productColorsRepository.save(ProductColors.of(productColorsDto));
+            rst.setResultMessage("색상 정보 수정에 성공했습니다.");
+        }
+
+        return rst;
+    }
+    
     @Override
     public Result delete(String pdColorNum) throws Exception {
         Result rst = null;

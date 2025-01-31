@@ -3,7 +3,6 @@ import { Outlet, Link, Routes, Route, useLocation } from "react-router-dom";
 import { Tabs, Tab } from "@mui/material";
 import Main from "../../../Main";
 
-const ColorForm = lazy(() => import("./ColorForm"));
 const ColorList = lazy(() => import("./ColorList"));
 const Not = lazy(() => import("../../Not"));
 
@@ -30,11 +29,9 @@ const ColorLayout = () => {
     <Main title="" description="">
       <Tabs value={tab} onChange={tabChng} className="mb-4">
         <Tab component={Link} to="list" label="List" value="0" />
-        <Tab component={Link} to="form" label="Form" value="1" />
       </Tabs>
 
       <Routes>
-        <Route path="form" element={<ColorForm />} />
         <Route path="list" element={<ColorList />} />
         <Route path="*" element={<Not />} />
       </Routes>

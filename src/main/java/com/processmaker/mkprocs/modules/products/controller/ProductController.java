@@ -223,11 +223,26 @@ public class ProductController {
      * Param  : pdColorCode, pdColorName
      * Return : Result
      **/
-    @GetMapping("cr/dupchk/{pdColorCode}/{pdColorName}")
-    public Result colorDupchk(@PathVariable("pdColorCode") String pdColorCode, @PathVariable("pdColorName") String pdColorName) {
+    @GetMapping("cr/dupchk")
+    public Result colorDupchk(@RequestParam(name = "pdColorNum", required = false)  String pdColorNum,
+                              @RequestParam(name = "pdColorCode") String pdColorCode,
+                              @RequestParam(name = "pdColorName") String pdColorName,
+                              @RequestParam(name = "prevPdColorCode", required = false) String prevPdColorCode,
+                              @RequestParam(name = "prevPdColorName", required = false) String prevPdColorName,
+                              @RequestParam(name = "pdColorEditFlag") String pdColorEditFlag
+    ) {
         Result rst = null;
         try {
-            rst = productColorService.dupchk(pdColorCode, pdColorName);
+
+            ProductColorsDto dto = new ProductColorsDto();
+            dto.setPdColorNum("".equals(pdColorNum) ? 0 : Long.parseLong(pdColorNum));
+            dto.setPdColorCode(pdColorCode);
+            dto.setPdColorName(pdColorName);
+            dto.setPrevPdColorCode(prevPdColorCode);
+            dto.setPrevPdColorName(prevPdColorName);
+            dto.setPdColorEditFlag(Boolean.getBoolean(pdColorEditFlag));
+
+            rst = productColorService.dupchk(dto);
         } catch (Exception e) {
             log.error(e.getMessage());
             rst = new Result(500, "시스템 오류 발생");
@@ -253,6 +268,23 @@ public class ProductController {
         return rst;
     }
 
+    /**
+     * [Preview]
+     * Desc.  : 신규 상품 색상 등록
+     * Param  : @RequestBody ProductColorsDto
+     * Return : Result
+     **/
+    @PutMapping("cr/update")
+    public Result colorUpdate(@RequestBody ProductColorsDto productColorsDto) {
+        Result rst = null;
+        try {
+            rst = productColorService.update(productColorsDto);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            rst = new Result(500, "시스템 오류 발생");
+        }
+        return rst;
+    }
 
     /**
      * [Preview]

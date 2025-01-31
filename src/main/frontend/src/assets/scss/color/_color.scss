@@ -27,4 +27,26 @@
     background-color: rgba(238, 246, 255, 0.3);
     cursor: pointer;
   }
+
+  .pd-color-chips-add {
+    border: 1px solid #7bb5ee;
+    background-color: white;
+    padding-left: 0.5em;
+    border-radius: 10px;
+    text-align: center;
+
+    .pd-color-name {
+      font-size: 10pt;
+      color: #1976d2;
+      overflow-x: hidden;
+      white-space: inherit;
+    }
+
+  }
+
+  .pd-color-chips-add:hover {
+    background-color: rgba(215, 234, 255, 0.3);
+    font-weight: 600;
+    cursor: pointer;
+  }
 }
