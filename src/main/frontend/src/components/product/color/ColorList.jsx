@@ -18,11 +18,10 @@ import {
   HighlightOff,
   CheckCircleOutline,
   Close,
-  Add
+  Add,
 } from "@mui/icons-material";
 import axios from "axios";
 import { Ctx } from "../../../App.js";
-import { GiFalloutShelter } from "react-icons/gi";
 
 const ColorList = () => {
   // global variants
@@ -180,8 +179,6 @@ const ColorList = () => {
   const dupchk = async () => {
     loader(0);
 
-    
-
     let cd = crDtl.pdColorCode.replace("#", "");
     let nm = crDtl.pdColorName;
     let dc = crDtl.pdColorDupChk;
@@ -189,10 +186,10 @@ const ColorList = () => {
     let url = "/rest/pd/cr/dupchk";
     if (cd && nm && !dc) {
       await axios({
-          method: "get",
-          url: url,
-          params: crDtl
-        })
+        method: "get",
+        url: url,
+        params: crDtl,
+      })
         .then((res) => {
           let rst = res.data.resultCode;
           let rstMsg = res.data.resultMessage;
@@ -265,7 +262,7 @@ const ColorList = () => {
     let edit = crDtl.pdColorEditFlag;
     let url = "/rest/pd/cr/";
     let method = "";
-    if ( !edit ) {
+    if (!edit) {
       url += "/create";
       method = "post";
     } else {
@@ -279,7 +276,7 @@ const ColorList = () => {
       data: JSON.stringify(crDtl),
       headers: {
         "Content-Type": "application/json",
-      }
+      },
     })
       .then((res) => {
         alert(res.data.resultMessage);
@@ -291,7 +288,7 @@ const ColorList = () => {
             prevPdColorName: "",
             prevPdColorCode: "",
             pdColorDupChk: false,
-            pdColorEditFlag: false
+            pdColorEditFlag: false,
           });
           getColorList();
         }
@@ -305,9 +302,7 @@ const ColorList = () => {
   const toggleColorForm = (event, type, id) => {
     event.stopPropagation();
 
-    let target = event.target;
-
-    if ( type === 1 ) {
+    if (type === 1) {
       setMode(false);
       let dtl = colors[Number(id)];
       setCrDtl({
@@ -317,8 +312,8 @@ const ColorList = () => {
         prevPdColorName: dtl.pdColorName,
         prevPdColorCode: dtl.pdColorCode,
         pdColorDupChk: true,
-        pdColorEditFlag: true
-      })
+        pdColorEditFlag: true,
+      });
     } else {
       setMode(type === 2);
       setCrDtl({
@@ -328,10 +323,10 @@ const ColorList = () => {
         prevPdColorName: "",
         prevPdColorCode: "",
         pdColorDupChk: false,
-        pdColorEditFlag: false
-      })
+        pdColorEditFlag: false,
+      });
     }
-  }
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -378,13 +373,15 @@ const ColorList = () => {
         </Grid2>
       </Box>
       <Box id="pd-color-pallete" className="mt-2">
-        <Grid2 container spacing={2} sx={{ justifyContent: "flex-start" }} >
-          <Grid2 size={1} className="pd-color-chips-add" onClick={(event) => toggleColorForm(event, 0)}>
+        <Grid2 container spacing={2} sx={{ justifyContent: "flex-start" }}>
+          <Grid2
+            size={1}
+            className="pd-color-chips-add"
+            onClick={(event) => toggleColorForm(event, 0)}
+          >
             <Grid2 container spacing={1}>
               <Grid2 size={9}>
-                <span className="pd-color-name">
-                  추가하기
-                </span>
+                <span className="pd-color-name">추가하기</span>
               </Grid2>
               <Grid2 size={1}>
                 <Add
@@ -408,7 +405,7 @@ const ColorList = () => {
                       size={1}
                       id={color.pdColorNum}
                       className="pd-color-chips"
-                      onClick={(event) => toggleColorForm(event, 1, s+idx)}
+                      onClick={(event) => toggleColorForm(event, 1, s + idx)}
                     >
                       <Grid2 container spacing={1}>
                         <Grid2 size={3}>
@@ -548,7 +545,7 @@ const ColorList = () => {
                 disabled={!crDtl.pdColorDupChk}
                 onClick={handleSubmit}
               >
-                { crDtl.pdColorEditFlag ? "수정하기" : "등록하기" }
+                {crDtl.pdColorEditFlag ? "수정하기" : "등록하기"}
               </Button>
             </Grid2>
           </Grid2>

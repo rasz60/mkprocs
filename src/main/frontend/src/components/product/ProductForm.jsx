@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { Ctx } from "../../App.js";
 import {
   Box,
   TextField,
@@ -9,6 +10,7 @@ import {
   Divider,
   Button,
   Grid2,
+  Chip,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import Select from "@mui/material/Select";
@@ -16,14 +18,25 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ProductForm = () => {
+  // global variants
+  const { loader } = useContext(Ctx);
+
+  // validation
   const [validated, setValidated] = useState("false");
+
+  // factories (제조사)
   const [factories, setFactories] = useState([]);
-  // categoryLevel1, categoryLevel2 (select-box)
+  // categoryLevel1, categoryLevel2, categoryLevel3 (대/중/소분류 select-box)
   const [ctLv1Dtl, setCtLv1Dtl] = useState([]);
   const [ctLv2Dtl, setCtLv2Dtl] = useState([]);
   const [ctLv3Dtl, setCtLv3Dtl] = useState([]);
+
   //const [platforms, setPlatforms] = useState(null);
-  //const [colors, setProductColors] = useState(null);
+
+  // 상품 색상
+  const [colors, setColors] = useState(null);
+
+  // 상품 정보 상세
   const [pdDtl, setPdDtl] = useState({
     pdName: "",
     pdFcNum: "",
@@ -34,11 +47,18 @@ const ProductForm = () => {
     pdPrice: "",
   });
 
+  /*
+    func : document ready
+  */
   useEffect(() => {
-    categoryList(1);
-    factoryList();
+    categoryList(1); // category 대분류 전체 조회
+    factoryList(); // factory(제조사) 전체 조회
+    getColorList(); // 상품 색상 전체 조회
   }, []);
 
+  /*
+    func : 대/중/소분류 카테고리 리스트 조회
+  */
   const categoryList = async (lv, pid) => {
     let url = "/rest/pd/ct/list/" + lv + (pid ? "/" + pid : "");
     await axios
@@ -60,16 +80,49 @@ const ProductForm = () => {
       });
   };
 
+  /*
+    func : 제조사 리스트 조회
+  */
   const factoryList = async () => {
+    loader(0);
     let url = "/rest/fc/list";
-    let res = await fetch(url);
-    let resJson = await res.json();
 
-    let fcList = resJson.result.fcList;
+    await axios.get(url).then((rst) => {
+      let msg = rst.data.resultMessage;
+      let code = rst.data.resultCode;
+      let list = rst.data.result.fcList;
+      if (code === 200) {
+        setFactories(list);
+      } else {
+        alert(msg);
+      }
+    });
+    loader(-1);
+  };
 
-    if (fcList != null) {
-      setFactories(fcList);
-    }
+  /*
+    func : 상품 색상 목록 조회
+  */
+  const getColorList = async () => {
+    // 로딩 컴포넌트 출력
+    loader(0);
+
+    let url = "/rest/pd/cr/list";
+
+    let arr = [];
+
+    await axios
+      .get(url)
+      .then((res) => {
+        setColors(res.data.result.pdCrList);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // 로딩 컴포넌트 삭제
+    loader(-1);
+    return arr;
   };
 
   const navigate = useNavigate();
@@ -184,7 +237,7 @@ const ProductForm = () => {
                     onChange={handleChng}
                   >
                     <MenuItem value="">선택</MenuItem>
-                    {ctLv1Dtl.length > 0
+                    {ctLv1Dtl
                       ? ctLv1Dtl.map((ctLv1) => (
                           <MenuItem
                             key={ctLv1.pdCategoryNum}
@@ -210,7 +263,7 @@ const ProductForm = () => {
                     onChange={handleChng}
                   >
                     <MenuItem value="">선택</MenuItem>
-                    {ctLv2Dtl.length > 0
+                    {ctLv2Dtl
                       ? ctLv2Dtl.map((ctLv2) => (
                           <MenuItem
                             key={ctLv2.pdCategoryNum}
@@ -236,7 +289,7 @@ const ProductForm = () => {
                     onChange={handleChng}
                   >
                     <MenuItem value="">선택</MenuItem>
-                    {ctLv3Dtl.length > 0
+                    {ctLv3Dtl
                       ? ctLv3Dtl.map((ctLv3) => (
                           <MenuItem
                             key={ctLv3.pdCategoryNum}
@@ -289,7 +342,7 @@ const ProductForm = () => {
                 onChange={handleChng}
               >
                 <MenuItem value="">선택</MenuItem>
-                {factories.length > 0
+                {factories
                   ? factories.map((factory) => (
                       <MenuItem key={factory.fcNum} value={factory.fcNum}>
                         {factory.fcName}
@@ -325,6 +378,29 @@ const ProductForm = () => {
                 onChange={handleChng}
               >
                 <MenuItem value="">선택</MenuItem>
+                {colors
+                  ? colors.map((color) => (
+                      <MenuItem key={color.pdColorNum} value={color.pdColorNum}>
+                        <Grid2 container sx={{ width: "100%" }} spacing={2}>
+                          <Grid2 size={0.23}>
+                            <Chip
+                              sx={{
+                                border: "1px solid #ececec",
+                                backgroundColor: color.pdColorCode,
+                                width: "2em",
+                                height: "1.2em",
+                              }}
+                            ></Chip>
+                          </Grid2>
+                          <Grid2 size={11.77}>
+                            <span className="pd-color-name">
+                              {color.pdColorName}
+                            </span>
+                          </Grid2>
+                        </Grid2>
+                      </MenuItem>
+                    ))
+                  : null}
               </Select>
               <FormHelperText>상품 색상을 선택해주세요.</FormHelperText>
             </FormControl>
@@ -334,7 +410,7 @@ const ProductForm = () => {
               variant="outlined"
               startIcon={<Add />}
               size="small"
-              onClick={() => navigate("/admin/product/color/form")}
+              onClick={() => navigate("/admin/product/color/list")}
             >
               추가
             </Button>
