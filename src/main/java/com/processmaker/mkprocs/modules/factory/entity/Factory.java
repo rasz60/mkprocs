@@ -34,9 +34,6 @@ public class Factory {
 
     private String fcStateName;
 
-    @OneToMany(mappedBy = "pdFcInfo", fetch = FetchType.EAGER)
-    List<Products> pdList = new ArrayList<>();
-
     public Factory() {}
     public static Factory of(FactoryDto factoryDto) {
         Factory fc = new Factory();

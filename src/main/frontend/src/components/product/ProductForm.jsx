@@ -22,7 +22,7 @@ const ProductForm = () => {
   const { loader } = useContext(Ctx);
 
   // validation
-  const [validated, setValidated] = useState("false");
+  const [validated, setValidated] = useState(false);
 
   // factories (제조사)
   const [factories, setFactories] = useState([]);
@@ -127,30 +127,9 @@ const ProductForm = () => {
 
   const navigate = useNavigate();
 
-  const fnSave = async () => {
-    let url = "/rest/pd/create";
-    let res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        pdName: document.querySelector("#pdName").value,
-        pdCategory: document.querySelector("#pdCategory").value,
-        pdPrice: document.querySelector("#pdPrice").value,
-        pdFcNum: document.querySelector("#pdFcNum").value,
-        pdColorNum: document.querySelector("#pdColorNum").vaule,
-      }),
-    });
-
-    let data = await res.json();
-
-    if (data.resultCode === 200) {
-      alert(data.resultMessage);
-      navigate("/admin/product/list");
-    }
-  };
-
+  /*
+    func : input, select 입력 값 binding
+  */
   const handleChng = (event) => {
     const { name, value } = event.target;
 
@@ -159,11 +138,15 @@ const ProductForm = () => {
       [name]: value,
     });
 
+    // 카테고리 변경 시 다시 세팅
     if (name.indexOf("pdCategory") >= 0) {
       categoryCleanUp(name, value);
     }
   };
 
+  /*
+    func : 카테고리 초기화
+  */
   const categoryCleanUp = (name, value) => {
     let lv = Number(name.replace("pdCategoryLv", ""));
 
@@ -171,17 +154,21 @@ const ProductForm = () => {
     setPdDtl((prevPdDtl) => {
       let updatedPdDtl = { ...prevPdDtl };
 
-      // 중분류나 소분류를 초기화
+      // 변경한 카테고리가 대/중분류 일 때
       if (lv < 3) {
+        // 변경한 카테고리 하위의 카테고리 값을 초기화
         for (let i = lv + 1; i <= 3; i++) {
           if (i === lv + 1 && value) {
             categoryList(lv + 1, value);
           }
 
+          // 중분류 입력 값 초기화
           if (i === 2) {
             updatedPdDtl.pdCategoryLv2 = "";
             setCtLv2Dtl([]);
-          } else {
+          }
+          // 소분류 입력 값 초기화
+          else {
             updatedPdDtl.pdCategoryLv3 = "";
             setCtLv3Dtl([]);
           }
@@ -192,31 +179,102 @@ const ProductForm = () => {
     });
   };
 
-  const handleSubmit = (event) => {
+  /*
+    func : 등록 버튼 클릭 시
+  */
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    validation();
-
-    if (!validated) {
-      setValidated(false);
-      event.stopPropagation();
-    } else {
-      setValidated(true);
-      fnSave();
-    }
+    validation(); // form validation
+    loader(-1);
   };
 
+  /*
+    func : form validation
+  */
   const validation = () => {
-    for (let key in pdDtl) {
-      let val = pdDtl[key];
-      console.log(key, val);
+    loader(0);
 
-      if (key === "pdName") {
-        // valid
+    setValidated((valid) => {
+      // pdDtl 값 반복
+      for (let key in pdDtl) {
+        let val = pdDtl[key];
+
+        // 1. null 체크
+        if (!val) {
+          alert("비어있는 항목이 없이 작성해주세요.");
+          valid = false;
+          break;
+        }
+
+        // 2. 상품명 정규식 체크
+        if (key === "pdName") {
+          let regExp = new RegExp(/^[A-Za-z가-힣0-9]+$/); // 정규식
+
+          if (!regExp.test(val) && val) {
+            alert("한글, 영문(대/소문자), 숫자로만 입력해주세요.");
+            valid = false;
+            break;
+          }
+        }
+
+        // 3. price 체크 (최소 - 최대 금액)
+        if (key === "pdPrice") {
+          if (val < 1000) {
+            alert("상품 금액은 1,000원 이상으로 입력해주세요.");
+            valid = false;
+            break;
+          }
+        }
+
+        valid = true;
       }
 
-      //else if ( )
-    }
+      if (valid) {
+        fnSave();
+      }
+
+      return valid;
+    });
+
+    loader(-1);
+  };
+
+  /*
+    func : 신규 상품 등록
+  */
+  const fnSave = async () => {
+    let url = "/rest/pd/create";
+
+    await axios({
+      url: url,
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({
+        pdName: pdDtl.pdName,
+        pdCategoryLv1: pdDtl.pdCategoryLv1,
+        pdCategoryLv2: pdDtl.pdCategoryLv2,
+        pdCategoryLv3: pdDtl.pdCategoryLv3,
+        pdPrice: pdDtl.pdPrice,
+        pdFcNum: pdDtl.pdFcNum,
+        pdColorNum: pdDtl.pdColorNum,
+      }),
+    })
+      .then((res) => {
+        let code = res.data.resultCode;
+        let msg = res.data.resultMessage;
+
+        alert(msg);
+
+        if (code === 200) {
+          navigate("/admin/product/list");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
