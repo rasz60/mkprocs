@@ -48,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
         Map<String, Object> result = new HashMap<>();
 
         List<Products> products = productsRepository.findAll();
-        result.put("pdList", products);
+        result.put("pdList", ProductsDto.of(products));
 
         rst = new Result(200, result, "조회 성공.");
 

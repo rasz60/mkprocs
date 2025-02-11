@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name="products")
@@ -63,5 +64,9 @@ public class Products {
         pd.setPdMount(productsDto.getPdMount());
 
         return pd;
+    }
+
+    public static List<Products> of(List<ProductsDto> productsDto) {
+        return productsDto.stream().map(pdDto -> (Products) Products.of(pdDto)).toList();
     }
 }
