@@ -31,10 +31,23 @@ public class ProductServiceImpl implements ProductService {
     public Result create(ProductsDto productsDto) throws Exception {
         Result rst = null;
 
-        Products pd = setProducts(productsDto);
-        Long pdNum = productsRepository.save(pd).getPdNum();
+        Products pd = Products.of(productsDto);
 
+        Optional<ProductCategory> ct = productCategoryRepository.findById(productsDto.getPdCategoryLv3Num());
+
+        if ( ct.isPresent() ) {
+            pd.setPdCategoryInfo(ct.get());
+        }
+
+        Optional<ProductColors> cr = productColorsRepository.findById(productsDto.getPdColorNum());
+
+        if ( cr.isPresent() ) {
+            pd.setPdColorInfo(cr.get());
+        }
+
+        Long pdNum = productsRepository.save(pd).getPdNum();
         Map<String, Object> result = new HashMap<>();
+
         result.put("pdNum", pdNum);
 
         rst = new Result(200, result, "상품 등록이 완료되었습니다.");
@@ -53,39 +66,5 @@ public class ProductServiceImpl implements ProductService {
         rst = new Result(200, result, "조회 성공.");
 
         return rst;
-    }
-
-    public Products setProducts(ProductsDto productsDto) throws Exception {
-        setPdFcInfo(productsDto);
-        if ( productsDto.getPdColorNum() != null) setPdColorInfo(productsDto);
-        if ( productsDto.getPdCategoryNum() != null) setPdCategoryInfo(productsDto);
-
-        return Products.of(productsDto);
-    }
-
-    public void setPdFcInfo(ProductsDto productsDto) throws Exception {
-        Optional<Factory> fc = factoryRepository.findById(productsDto.getPdFcNum());
-        if ( fc.isPresent() ) {
-            productsDto.setPdFcInfo(fc.get());
-        } else {
-            throw new RuntimeException("FactoryNotFound.");
-        }
-    }
-
-    public void setPdColorInfo(ProductsDto productsDto) throws Exception {
-        Optional<ProductColors> pdc = productColorsRepository.findById(productsDto.getPdColorNum());
-        if ( pdc.isPresent() ) {
-            productsDto.setPdColorInfo(pdc.get());
-        } else {
-            throw new RuntimeException("ProductColorNotFound.");
-        }
-    }
-    public void setPdCategoryInfo(ProductsDto productsDto) throws Exception {
-        Optional<ProductCategory> pdcg = productCategoryRepository.findById(productsDto.getPdCategoryNum());
-        if ( pdcg.isPresent() ) {
-            productsDto.setPdCategoryInfo(pdcg.get());
-        } else {
-            throw new RuntimeException("ProductCategoryNotFound.");
-        }
     }
 }

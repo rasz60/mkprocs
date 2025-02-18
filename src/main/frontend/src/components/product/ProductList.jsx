@@ -63,13 +63,13 @@ const ProductList = () => {
               <ListItem>{product.pdFcInfo.fcName}</ListItem>
             </Grid2>
             <Grid2 size={2}>
-              <ListItem>{product.pdCategoryInfo}</ListItem>
+              <ListItem>{product.pdCategoryLv1}</ListItem>
             </Grid2>
             <Grid2 size={2}>
-              <ListItem>{product.pdFcInfo.fcName}</ListItem>
+              <ListItem>{product.pdCategoryLv2}</ListItem>
             </Grid2>
             <Grid2 size={2}>
-              <ListItem>{product.pdName}</ListItem>
+              <ListItem>{product.pdCategoryLv3}</ListItem>
             </Grid2>
             <Grid2 size={1}>
               <ListItem>{product.pdPrice}</ListItem>

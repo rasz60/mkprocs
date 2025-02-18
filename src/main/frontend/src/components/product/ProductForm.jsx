@@ -254,9 +254,9 @@ const ProductForm = () => {
       },
       data: JSON.stringify({
         pdName: pdDtl.pdName,
-        pdCategoryLv1: pdDtl.pdCategoryLv1,
-        pdCategoryLv2: pdDtl.pdCategoryLv2,
-        pdCategoryLv3: pdDtl.pdCategoryLv3,
+        pdCategoryLv1Num: pdDtl.pdCategoryLv1,
+        pdCategoryLv2Num: pdDtl.pdCategoryLv2,
+        pdCategoryLv3Num: pdDtl.pdCategoryLv3,
         pdPrice: pdDtl.pdPrice,
         pdFcNum: pdDtl.pdFcNum,
         pdColorNum: pdDtl.pdColorNum,

@@ -16,7 +16,6 @@ public class ProductsDto {
     private Factory pdFcInfo;
     private String pdName;
     private Long pdCategoryNum;
-    private ProductCategory pdCategoryInfo;
     private Long pdColorNum;
     private ProductColors pdColorInfo;
     private LocalDateTime pdRegistDate;
@@ -24,15 +23,22 @@ public class ProductsDto {
     private String pdState;
     private int pdMount;
 
+    private ProductCategory pdCategoryLv1;
+    private ProductCategory pdCategoryLv2;
+    private ProductCategory pdCategoryLv3;
+    private Long pdCategoryLv1Num;
+    private Long pdCategoryLv2Num;
+    private Long pdCategoryLv3Num;
     public ProductsDto() {}
 
     public static ProductsDto of(Products products) {
         ProductsDto pdDto = new ProductsDto();
 
+        pdDto.setPdCategoryInfo(products.getPdCategoryInfo());
+
         pdDto.setPdNum(products.getPdNum());
         pdDto.setPdFcInfo(products.getPdFcInfo());
         pdDto.setPdName(products.getPdName());
-        pdDto.setPdCategoryInfo(products.getPdCategoryInfo());
         pdDto.setPdRegistDate(products.getPdRegistDate());
         pdDto.setPdPrice(products.getPdPrice());
         pdDto.setPdState(products.getPdState());
@@ -43,5 +49,18 @@ public class ProductsDto {
 
     public static List<ProductsDto> of(List<Products> products) {
         return products.stream().map(pd -> (ProductsDto) ProductsDto.of(pd)).toList();
+    }
+
+    public void setPdCategoryInfo(ProductCategory productCategory) {
+        if ( productCategory != null ) {
+            this.setPdCategoryLv3(productCategory);
+            this.setPdCategoryLv3Num(productCategory.getPdCategoryNum());
+
+            this.setPdCategoryLv2(productCategory.getPdParentCategoryInfo());
+            this.setPdCategoryLv2Num(productCategory.getPdParentCategoryInfo().getPdCategoryNum());
+
+            this.setPdCategoryLv1(productCategory.getPdParentCategoryInfo().getPdParentCategoryInfo());
+            this.setPdCategoryLv1Num(productCategory.getPdParentCategoryInfo().getPdParentCategoryInfo().getPdCategoryNum());
+        }
     }
 }

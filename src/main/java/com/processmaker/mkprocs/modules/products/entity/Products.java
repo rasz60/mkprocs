@@ -57,7 +57,6 @@ public class Products {
         pd.setPdNum(productsDto.getPdNum());
         pd.setPdFcInfo(productsDto.getPdFcInfo());
         pd.setPdName(productsDto.getPdName());
-        pd.setPdCategoryInfo(productsDto.getPdCategoryInfo());
         pd.setPdRegistDate(productsDto.getPdRegistDate());
         pd.setPdPrice(productsDto.getPdPrice());
         pd.setPdState(productsDto.getPdState());
