@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { Ctx } from "../../App.js";
+import { ctx } from "../../App.js";
 import {
   Box,
   TextField,
@@ -19,7 +19,7 @@ import axios from "axios";
 
 const ProductForm = () => {
   // global variants
-  const { loader } = useContext(Ctx);
+  const { loader } = useContext(ctx);
 
   // validation
   const [validated, setValidated] = useState(false);
@@ -60,6 +60,7 @@ const ProductForm = () => {
     func : 대/중/소분류 카테고리 리스트 조회
   */
   const categoryList = async (lv, pid) => {
+    loader(0);
     let url = "/rest/pd/ct/list/" + lv + (pid ? "/" + pid : "");
     await axios
       .get(url)
@@ -78,6 +79,7 @@ const ProductForm = () => {
       .catch((err) => {
         console.log(err);
       });
+    loader(-1);
   };
 
   /*

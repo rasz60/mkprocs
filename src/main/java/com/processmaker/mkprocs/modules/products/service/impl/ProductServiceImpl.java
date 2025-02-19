@@ -33,16 +33,25 @@ public class ProductServiceImpl implements ProductService {
 
         Products pd = Products.of(productsDto);
 
-        Optional<ProductCategory> ct = productCategoryRepository.findById(productsDto.getPdCategoryLv3Num());
+        Optional<Factory> fc = factoryRepository.findById(productsDto.getPdFcNum());
+        if ( fc.isPresent() ) {
+            pd.setPdFcInfo(fc.get());
+        } else {
+            return new Result(501, null, "존재하지 않는 제조사입니다.");
+        }
 
+        Optional<ProductCategory> ct = productCategoryRepository.findById(productsDto.getPdCategoryLv3Num());
         if ( ct.isPresent() ) {
             pd.setPdCategoryInfo(ct.get());
+        } else {
+            return new Result(502, null, "존재하지 않는 카테고리입니다.");
         }
 
         Optional<ProductColors> cr = productColorsRepository.findById(productsDto.getPdColorNum());
-
         if ( cr.isPresent() ) {
             pd.setPdColorInfo(cr.get());
+        } else {
+            return new Result(503, null, "존재하지 않는 색상입니다.");
         }
 
         Long pdNum = productsRepository.save(pd).getPdNum();

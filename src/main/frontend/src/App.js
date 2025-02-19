@@ -21,13 +21,13 @@ const ColorLayout = lazy(() =>
 const OrderLayout = lazy(() => import("./components/order/OrderLayout"));
 const Not = lazy(() => import("./components/Not"));
 
-export const Ctx = createContext();
+export const ctx = createContext();
 
 const App = () => {
   const contextMethods = { handleChng, ListItem, loader };
 
   return (
-    <Ctx.Provider value={contextMethods}>
+    <ctx.Provider value={contextMethods}>
       <BrowserRouter>
         <Suspense fallback={<Main />}>
           <Routes>
@@ -47,7 +47,7 @@ const App = () => {
           </Routes>
         </Suspense>
       </BrowserRouter>
-    </Ctx.Provider>
+    </ctx.Provider>
   );
 };
 

@@ -24,11 +24,11 @@ import {
   AutoFixHigh,
 } from "@mui/icons-material";
 import axios from "axios";
-import { Ctx } from "../../../App.js";
+import { ctx } from "../../../App.js";
 
 const CategoryList = () => {
   // global variants
-  const { ListItem, loader, handleChng } = useContext(Ctx);
+  const { ListItem, loader, handleChng } = useContext(ctx);
 
   // category list
   const [categories, setCategory] = useState(null);

@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { ctx } from "../../App.js";
 import { Box, Grid2 } from "@mui/material";
 import { ListItem } from "../../assets/js/common";
 import axios from "axios";
 
 const ProductList = () => {
-  const [products, setProducts] = useState(null);
+  const { loader } = useContext(ctx);
+
+  const [products, setProducts] = useState([]);
 
   const getProductList = async () => {
+    loader(0);
     await axios
       .get("/rest/pd/list")
       .then((res) => {
@@ -22,6 +26,7 @@ const ProductList = () => {
       .catch((err) => {
         console.log(err);
       });
+    loader(-1);
   };
 
   useEffect(() => {
@@ -63,19 +68,19 @@ const ProductList = () => {
               <ListItem>{product.pdFcInfo.fcName}</ListItem>
             </Grid2>
             <Grid2 size={2}>
-              <ListItem>{product.pdCategoryLv1}</ListItem>
+              <ListItem>{product.pdCategoryLv1.pdCategoryName}</ListItem>
             </Grid2>
             <Grid2 size={2}>
-              <ListItem>{product.pdCategoryLv2}</ListItem>
+              <ListItem>{product.pdCategoryLv2.pdCategoryName}</ListItem>
             </Grid2>
             <Grid2 size={2}>
-              <ListItem>{product.pdCategoryLv3}</ListItem>
+              <ListItem>{product.pdCategoryLv3.pdCategoryName}</ListItem>
             </Grid2>
             <Grid2 size={1}>
               <ListItem>{product.pdPrice}</ListItem>
             </Grid2>
             <Grid2 size={1}>
-              <ListItem>{product.pdPrice}</ListItem>
+              <ListItem>{product.pdMount}</ListItem>
             </Grid2>
           </Grid2>
         ))

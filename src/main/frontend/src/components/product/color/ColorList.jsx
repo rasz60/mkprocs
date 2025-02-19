@@ -21,11 +21,11 @@ import {
   Add,
 } from "@mui/icons-material";
 import axios from "axios";
-import { Ctx } from "../../../App.js";
+import { ctx } from "../../../App.js";
 
 const ColorList = () => {
   // global variants
-  const { loader, handleChng } = useContext(Ctx);
+  const { loader, handleChng } = useContext(ctx);
 
   // category list
   const [colors, setColors] = useState(null);
